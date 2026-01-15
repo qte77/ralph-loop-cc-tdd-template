@@ -35,13 +35,6 @@
       "Edit(src/**/*.json)",
       "Edit(tests/**/*.py)",
       "Edit(tests/**/*.json)",
-      "mcp__context7__get-library-docs",
-      "mcp__context7__resolve-library-id",
-      "mcp__exa__web_search_exa",
-      "mcp__exa__get_code_context_exa",
-      "mcp__exa__deep_researcher_start",
-      "mcp__exa__deep_researcher_check",
-      "mcp__exa__crawling",
       "Read(.claude/skills/**/*.md)",
       "SlashCommand",
       "Skill",
@@ -82,6 +75,7 @@
     "command": "bash .claude/scripts/statusline.sh"
   },
   "enabledPlugins": {
-    "ralph-loop@claude-plugins-official": true
+    "ralph-loop@claude-plugins-official": true,
+    "context7@claude-plugins-official": true
   }
 }
