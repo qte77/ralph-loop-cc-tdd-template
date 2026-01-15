@@ -1,0 +1,87 @@
+{
+  "env": {
+    "ANTHROPIC_MODEL": "opusplan",
+    "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
+    "CLAUDE_CODE_IDE_SKIP_AUTO_INSTALL": "1",
+    "CLAUDE_CODE_SUBAGENT_MODEL": "opusplan",
+    "DISABLE_NON_ESSENTIAL_MODEL_CALLS": "1",
+    "OTEL_EXPORTER_OTLP_METRICS_PROTOCOL": "",
+    "OTEL_EXPORTER_OTLP_PROTOCOL": "",
+    "OTEL_LOGS_EXPORTER": ""
+  },
+  "enabledMcpjsonServers": ["context7", "exa"],
+  "permissions": {
+    "allow": [
+      "Bash(bash:.claude/scripts/ralph/*.sh:*)",
+      "Bash(chmod:+x:.claude/scripts/ralph/*.sh)",
+      "Bash(date:*)",
+      "Bash(git:diff:*)",
+      "Bash(git:log:*)",
+      "Bash(git:status:*)",
+      "Bash(git log --grep:*)",
+      "Bash(jq:*)",
+      "Bash(make:*)",
+      "Bash(tree:*)",
+      "Bash(uv sync:*)",
+      "Bash(uv run mypy:*)",
+      "Bash(uv run pytest:*)",
+      "Bash(uv run ruff:*)",
+      "Edit(AGENT_LEARNINGS.md)",
+      "Edit(AGENT_REQUESTS.md)",
+      "Edit(docs/**/*.md)",
+      "Edit(docs/ralph/*.json)",
+      "Edit(docs/ralph/*.txt)",
+      "Edit(src/**/*.py)",
+      "Edit(src/**/*.json)",
+      "Edit(tests/**/*.py)",
+      "Edit(tests/**/*.json)",
+      "mcp__context7__get-library-docs",
+      "mcp__context7__resolve-library-id",
+      "mcp__exa__web_search_exa",
+      "mcp__exa__get_code_context_exa",
+      "mcp__exa__deep_researcher_start",
+      "mcp__exa__deep_researcher_check",
+      "mcp__exa__crawling",
+      "Read(.claude/skills/**/*.md)",
+      "SlashCommand",
+      "Skill",
+      "WebFetch(domain:github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md)",
+      "WebFetch(domain:docs.anthropic.com/en/docs/claude-code/claude_code_docs_map.md)",
+      "WebFetch(domain:docs.anthropic.com)"
+    ],
+    "deny": [
+      "Bash(awk:*)",
+      "Bash(cat:*)",
+      "Bash(find:*)",
+      "Bash(git push:*)",
+      "Bash(grep:*)",
+      "Bash(head:*)",
+      "Bash(ls:*)",
+      "Bash(mkdir:*)",
+      "Bash(mv:*)",
+      "Bash(rg:*)",
+      "Bash(rm:*)",
+      "Bash(source:*)",
+      "Bash(tail:*)",
+      "Bash(touch:*)"
+    ],
+    "ask": [
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Edit(.claude/**)",
+      "Edit(AGENTS.md)",
+      "Edit(CLAUDE.md)",
+      "Edit(CONTRIBUTE.md)",
+      "Edit(Makefile)",
+      "Edit(pyproject.toml)",
+      "Edit(README.md)"
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "bash .claude/scripts/statusline.sh"
+  },
+  "enabledPlugins": {
+    "ralph-loop@claude-plugins-official": true
+  }
+}

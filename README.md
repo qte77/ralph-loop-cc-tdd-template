@@ -1,2 +1,6 @@
-# ralph-loop-cc-template
-Ralph-loop template using CC plugin, skills and rules
+---
+title: ralph-loop-cc-template
+version: 1.0
+applies-to: humans
+purpose: Ralph-loop template using CC plugin, skills and rules
+---
