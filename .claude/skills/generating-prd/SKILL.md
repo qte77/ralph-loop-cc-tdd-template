@@ -24,7 +24,7 @@ prd.json format.
 
 ```json
 {
-  "project": "Agents-eval",
+  "project": "your-project-name",
   "source": "docs/PRD.md",
   "generated": "YYYY-MM-DD HH:MM:SS",
   "stories": [

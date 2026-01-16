@@ -9,7 +9,7 @@
     "OTEL_EXPORTER_OTLP_PROTOCOL": "",
     "OTEL_LOGS_EXPORTER": ""
   },
-  "enabledMcpjsonServers": ["context7", "exa"],
+  
   "permissions": {
     "allow": [
       "Bash(bash:.claude/scripts/ralph/*.sh:*)",
