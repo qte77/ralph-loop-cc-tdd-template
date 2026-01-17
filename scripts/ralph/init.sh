@@ -76,8 +76,8 @@ check_project_structure() {
         "docs/PRD.md"
         "Makefile"
         ".claude/skills/generating-prd/SKILL.md"
-        ".claude/scripts/ralph/ralph.sh"
-        ".claude/scripts/ralph/prompt.md"
+        "scripts/ralph/ralph.sh"
+        "scripts/ralph/prompt.md"
     )
 
     local missing=0
@@ -172,8 +172,9 @@ check_prd_json() {
 # Make scripts executable
 make_executable() {
     log_info "Making scripts executable..."
-    chmod +x .claude/scripts/ralph/ralph.sh
-    chmod +x .claude/scripts/ralph/init.sh
+    chmod +x scripts/ralph/ralph.sh
+    chmod +x scripts/ralph/init.sh
+    chmod +x scripts/ralph/reorganize_prd.sh
     log_success "Scripts are executable"
 }
 
@@ -198,7 +199,7 @@ main() {
     log_info "Ready to run Ralph loop:"
     log_info "  make ralph_run [ITERATIONS=25]"
     log_info "  or"
-    log_info "  ./.claude/scripts/ralph/ralph.sh 5"
+    log_info "  ./scripts/ralph/ralph.sh 5"
     echo ""
 }
 

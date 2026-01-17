@@ -5,7 +5,7 @@
 
 .SILENT:
 .ONESHELL:
-.PHONY: setup_dev setup_claude_code setup_markdownlint setup_project run_markdownlint ruff test_all type_check validate quick_validate ralph_init ralph_run ralph_status ralph_clean help
+.PHONY: setup_dev setup_claude_code setup_markdownlint setup_project run_markdownlint ruff test_all type_check validate quick_validate ralph_init ralph_run ralph_status ralph_clean ralph_reorganize help
 .DEFAULT_GOAL := help
 
 
@@ -85,7 +85,7 @@ setup_project:  ## Customize template with your project details
 	sed -i "s|your_project_name|$$PROJECT_SNAKE|g" pyproject.toml; \
 	sed -i "s|\[YEAR\]|$$YEAR|g" LICENSE.md; \
 	sed -i "s|\[YOUR NAME OR ORGANIZATION\]|$$AUTHOR|g" LICENSE.md; \
-	sed -i "s|your-project-name|$$PROJECT|g" .claude/scripts/ralph/init.sh; \
+	sed -i "s|your-project-name|$$PROJECT|g" scripts/ralph/init.sh; \
 	sed -i "s|your-project-name|$$PROJECT|g" .claude/templates/ralph/progress.txt.template; \
 	sed -i "s|your-project-name|$$PROJECT|g" .claude/templates/ralph/prd.json.template; \
 	# Rename source directory
@@ -146,12 +146,12 @@ quick_validate:  ## Fast development cycle validation
 
 ralph_init:  ## Initialize Ralph loop environment
 	echo "Initializing Ralph loop environment ..."
-	bash .claude/scripts/ralph/init.sh
+	bash scripts/ralph/init.sh
 
 ralph_run:  ## Run Ralph autonomous development loop (use ITERATIONS=N to set max iterations)
 	echo "Starting Ralph loop ..."
 	ITERATIONS=$${ITERATIONS:-25}
-	bash .claude/scripts/ralph/ralph.sh $$ITERATIONS
+	bash scripts/ralph/ralph.sh $$ITERATIONS
 
 ralph_status:  ## Show Ralph loop progress and status
 	echo "Ralph Loop Status"
@@ -173,6 +173,18 @@ ralph_clean:  ## Reset Ralph state (WARNING: removes prd.json and progress.txt)
 	read
 	rm -f docs/ralph/prd.json docs/ralph/progress.txt
 	echo "Ralph state cleaned. Run 'make ralph_init' to reinitialize."
+
+ralph_reorganize:  ## Archive current PRD and start new iteration. Usage: make ralph_reorganize NEW_PRD=path/to/new.md [VERSION=2]
+	@if [ -z "$(NEW_PRD)" ]; then \
+		echo "Error: NEW_PRD parameter required"; \
+		echo "Usage: make ralph_reorganize NEW_PRD=docs/PRD-New.md [VERSION=2]"; \
+		exit 1; \
+	fi
+	@VERSION_ARG=""; \
+	if [ -n "$(VERSION)" ]; then \
+		VERSION_ARG="-v $(VERSION)"; \
+	fi; \
+	bash scripts/ralph/reorganize_prd.sh $$VERSION_ARG $(NEW_PRD)
 
 
 # MARK: help

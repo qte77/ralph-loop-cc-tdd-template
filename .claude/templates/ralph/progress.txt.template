@@ -11,7 +11,7 @@ Each iteration appends its results here.
 ## Setup
 
 Ralph loop infrastructure:
-- Scripts: .claude/scripts/ralph/ (ralph.sh, prompt.md, init.sh)
+- Scripts: scripts/ralph/ (ralph.sh, init.sh, reorganize_prd.sh)
 - Templates: .claude/templates/ralph/ (prd.json.template, progress.txt.template)
 - State files: docs/ralph/ (prd.json, progress.txt)
 - Skills: .claude/skills/ (designing-backend, implementing-python, reviewing-code, generating-prd)

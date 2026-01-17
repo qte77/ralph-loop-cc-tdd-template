@@ -2,7 +2,7 @@
 #
 # Ralph Loop - Autonomous iteration script
 #
-# Usage: ./.claude/scripts/ralph/ralph.sh [MAX_ITERATIONS]
+# Usage: ./scripts/ralph/ralph.sh [MAX_ITERATIONS]
 #        make ralph_run [ITERATIONS=25]
 #
 # This script orchestrates autonomous task execution by:
@@ -19,8 +19,8 @@ set -euo pipefail
 MAX_ITERATIONS=${1:-10}
 PRD_JSON="docs/ralph/prd.json"
 PROGRESS_FILE="docs/ralph/progress.txt"
-PROMPT_FILE=".claude/scripts/ralph/prompt.md"
-BRANCH_PREFIX="ralph/story-"s
+PROMPT_FILE="scripts/ralph/prompt.md"
+BRANCH_PREFIX="ralph/story-"
 
 # Colors for output
 RED='\033[0;31m'
