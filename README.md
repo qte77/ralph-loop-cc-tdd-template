@@ -35,6 +35,13 @@ make ralph_reorganize NEW_PRD=docs/PRD-v2.md [VERSION=2]  # Archive and start ne
 
 For detailed setup and usage, see [docs/TEMPLATE_USAGE.md](docs/TEMPLATE_USAGE.md).
 
+## DevContainer
+
+- **`template/`** - Template dev (Alpine ~10MB)
+- **`project/`** - Project dev (Python + Node + Docker ~1GB+)
+
+See [.devcontainer/README.md](.devcontainer/README.md).
+
 ## Workflow
 
 ```text

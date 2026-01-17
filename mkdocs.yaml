@@ -1,10 +1,9 @@
----
 # https://github.com/james-willett/mkdocs-material-youtube-tutorial
 # https://mkdocstrings.github.io/recipes/
 # site info set in workflow
-site_name: '<gha_sed_site_name_here>'
-site_description: '<gha_sed_site_description_here>'
-repo_url: '<gha_sed_repo_url_here>'
+site_name: '[PROJECT NAME]'
+site_description: '[PROJECT DESCRIPTION]'
+repo_url: 'https://github.com/[GITHUB REPO]'
 edit_uri: edit/main
 theme:
   name: material
@@ -80,4 +79,3 @@ validation:
 # threating warnings as errors
 # also checks for broken links
 # strict: true
-...
