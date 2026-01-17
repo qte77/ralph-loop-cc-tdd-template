@@ -30,22 +30,6 @@ make ralph_status               # Check progress
 
 For detailed setup and usage, see [docs/TEMPLATE_USAGE.md](docs/TEMPLATE_USAGE.md).
 
-## Development
-
-```bash
-# Format and lint
-make ruff
-
-# Type check
-make type_check
-
-# Run tests
-make test_all
-
-# Complete validation using all of the above
-make validate
-```
-
 ## Project Structure
 
 ```
@@ -61,11 +45,6 @@ docs/
 Makefile         # Build automation and Ralph orchestration
 ```
 
-## Core Principles
+## Contributing
 
-- **KISS** (Keep It Simple, Stupid)
-- **DRY** (Don't Repeat Yourself)
-- **YAGNI** (You Aren't Gonna Need It)
-- User Experience, Joy, and Success
-
-See `.claude/rules/core-principles.md` for full guidelines.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for development workflow, core principles, and contribution guidelines.

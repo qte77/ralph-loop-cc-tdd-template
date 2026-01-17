@@ -1,6 +1,6 @@
-# Using This Template
+# Template Usage
 
-This is a Python project template for autonomous development using the Ralph Loop plugin with Claude Code.
+Python project template with Ralph Loop autonomous development.
 
 ## Setup Steps
 
@@ -11,18 +11,13 @@ This is a Python project template for autonomous development using the Ralph Loo
 git clone <your-repo-url>
 cd <your-repo>
 
-# Search and replace placeholders
-find . -type f -name "*.md" -o -name "*.toml" -o -name "*.json" | xargs sed -i 's/your-project-name/my-actual-project/g'
+# Customize the template
+make setup_project
 ```
 
-### 2. Update Project Metadata
+### 2. Write Requirements
 
-Edit these files with your project details:
-
-- **`pyproject.toml`**: Update `name`, `description`, `version`
-- **`LICENSE.md`**: Update copyright holder (line 3)
-- **`README.md`**: Update project name and description
-- **`docs/PRD.md`**: Write your product requirements
+Edit **`docs/PRD.md`** with your product requirements.
 
 ### 3. Setup Development Environment
 
@@ -34,49 +29,43 @@ make setup_dev
 make validate
 ```
 
-### 4. Create Project Structure
+### 4. Run Ralph Loop
 
 ```bash
-# Create source and test directories
-mkdir -p src tests
-touch src/__init__.py tests/__init__.py
+make ralph_init              # Initialize (creates prd.json)
+make ralph_run ITERATIONS=10 # Run autonomous development
+make ralph_status            # Check progress
 ```
 
-### 5. Use Ralph Loop
+To generate prd.json: Run `claude -p` then use `generating-prd` skill.
+
+### Starting New Product Iteration
+
+When PRD.md changes significantly, reorganize and archive:
 
 ```bash
-# Initialize Ralph loop environment
-make ralph_init
-
-# Generate prd.json from your PRD.md
-# Run: claude -p
-# Then ask: "Use generating-prd skill to create prd.json from docs/PRD.md"
-
-# Run autonomous development
-make ralph ITERATIONS=10
-
-# Check progress
-make ralph_status
+make ralph_reorganize NEW_PRD=docs/PRD-v2.md VERSION=2
 ```
+
+Archives current PRD, prd.json, and progress to `docs/ralph/archive/`, then activates new PRD.
 
 ## Optional: MCP Servers
 
-The template includes MCP servers in `.claude/settings.json`:
-- `context7` - Code context management
-- `exa` - Search capabilities
-
-If you don't need these, remove them from `.claude/settings.json` under `enabledMcpjsonServers`.
+Template includes `context7` and `exa` MCP servers. Remove from `.claude/settings.json` if not needed.
 
 ## Directory Structure
 
 ```
 your-project/
-├── .claude/              # Claude Code configuration (don't modify)
-├── docs/                 # Documentation
+├── .claude/              # Claude Code configuration
+├── docs/
 │   ├── PRD.md           # Product requirements (edit this!)
-│   └── ralph/           # Ralph state (auto-generated, gitignored)
-├── src/                 # Your source code goes here
-├── tests/               # Your tests go here
+│   ├── ralph/           # Ralph state (gitignored)
+│   └── archive/         # Previous iterations
+├── scripts/
+│   └── ralph/           # Ralph automation scripts
+├── src/                 # Your source code
+├── tests/               # Your tests
 ├── Makefile             # Build automation
 └── pyproject.toml       # Python project config
 ```
@@ -84,23 +73,20 @@ your-project/
 ## Common Commands
 
 ```bash
+make setup_project    # Customize template
 make setup_dev        # Setup environment
-make validate         # Run all checks (ruff, pyright, pytest)
-make ralph_init       # Initialize Ralph loop
-make ralph            # Run Ralph autonomous dev
-make ralph_status     # Check Ralph progress
-make help             # Show all available commands
+make validate         # Run all checks
+make ralph_init       # Initialize Ralph
+make ralph_run        # Run autonomous dev
+make ralph_status     # Check progress
+make ralph_reorganize # Archive PRD and start new iteration
+make help             # Show all commands
 ```
 
-## After Setup
+## Next Steps
 
-1. Delete this file (`TEMPLATE_USAGE.md`)
-2. Write your actual requirements in `docs/PRD.md`
-3. Generate `prd.json` using the `generating-prd` skill
-4. Run `make ralph` and let Claude Code autonomously implement your project
+1. Delete `TEMPLATE_USAGE.md`
+2. Write requirements in `docs/PRD.md`
+3. Run `make ralph_run` for autonomous implementation
 
-## Need Help?
-
-- Read `docs/RalphUsage.md` for Ralph Loop details
-- Check `.claude/skills/` for available skills
-- See `.claude/rules/core-principles.md` for coding principles
+See `docs/RalphUsage.md` for Ralph details, `.claude/skills/` for available skills.

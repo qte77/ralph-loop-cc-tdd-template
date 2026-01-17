@@ -7,8 +7,38 @@ purpose: Developer setup, workflow, and contribution guidelines
 
 # Contributing
 
-Contributions welcome! Please follow these steps:
+Contributions welcome! Follow these guidelines for both human and agent contributors:
 
-1. Run `make validate` before committing
-2. Follow KISS, DRY, YAGNI principles (see `.claude/rules/core-principles.md`)
-3. Write tests before implementation for new features
+## Core Principles
+
+- **KISS** (Keep It Simple, Stupid) - Simplest solution that works
+- **DRY** (Don't Repeat Yourself) - Single source of truth
+- **YAGNI** (You Aren't Gonna Need It) - Implement only what's requested
+- **User Experience, Joy, and Success** - Optimize for user value
+
+See `.claude/rules/core-principles.md` for complete guidelines.
+
+## Development Workflow
+
+### 1. Setup Environment
+
+```bash
+make setup_dev  # Install dependencies and configure tools
+```
+
+### 2. Make Changes
+
+Follow TDD: Write tests before implementing features.
+
+### 3. Validate
+
+```bash
+make ruff        # Format and lint
+make type_check  # Type checking
+make test_all    # Run tests
+make validate    # Run all checks (required before committing)
+```
+
+### 4. Commit
+
+All changes must pass `make validate` before committing.
