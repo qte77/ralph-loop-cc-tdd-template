@@ -27,7 +27,7 @@ make validate
 **Ralph Loop (Autonomous Execution):**
 
 If `docs/ralph/prd.json` detected OR if "ralph" parameter provided run:
-`make ralph ITERATIONS=N`
+`make ralph_run ITERATIONS=N`
 
 See `/phase-exec-planner` with "ralph" parameter for prd.json generation.
 

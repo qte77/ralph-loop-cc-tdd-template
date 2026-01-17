@@ -19,6 +19,6 @@ Ralph loop infrastructure:
 Next steps:
 1. Run `make ralph_init` to validate environment
 2. Generate real prd.json: `claude -p` then ask to use generating-prd skill
-3. Execute Ralph loop: `make ralph ITERATIONS=5`
+3. Execute Ralph loop: `make ralph_run ITERATIONS=5`
 
 ---

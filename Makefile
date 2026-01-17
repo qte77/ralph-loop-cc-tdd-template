@@ -5,7 +5,7 @@
 
 .SILENT:
 .ONESHELL:
-.PHONY: setup_dev setup_claude_code setup_markdownlint run_markdownlint ruff test_all type_check validate quick_validate ralph_init ralph ralph_status ralph_clean help
+.PHONY: setup_dev setup_claude_code setup_markdownlint setup_project run_markdownlint ruff test_all type_check validate quick_validate ralph_init ralph_run ralph_status ralph_clean help
 .DEFAULT_GOAL := help
 
 
@@ -29,6 +29,78 @@ setup_markdownlint:  ## Setup markdownlint CLI, node.js and npm have to be prese
 	echo "Setting up markdownlint CLI ..."
 	npm install -gs markdownlint-cli
 	echo "markdownlint version: $$(markdownlint --version)"
+
+setup_project:  ## Customize template with your project details
+	@echo "Project Setup"
+	@echo "============="
+	@# Check if already customized
+	@if [ ! -d "src/your_project_name" ] && [ -z "$(GITHUB_REPO)" ]; then \
+		echo "WARNING: Appears already customized (src/your_project_name/ not found)"; \
+		read -p "Continue anyway? [y/N]: " confirm; \
+		[ "$$confirm" != "y" ] && exit 0; \
+	fi
+	@# Get GITHUB_REPO (prompt if empty)
+	@if [ -z "$(GITHUB_REPO)" ]; then \
+		read -p "GitHub org/repo (e.g., acme/my-app): " GITHUB_REPO; \
+	else \
+		GITHUB_REPO="$(GITHUB_REPO)"; \
+	fi; \
+	# Derive PROJECT from GITHUB_REPO if not provided
+	if [ -z "$(PROJECT)" ]; then \
+		PROJECT=$${PROJECT:-$$(echo "$$GITHUB_REPO" | cut -d'/' -f2)}; \
+		if [ -z "$$PROJECT" ]; then \
+			read -p "Project name (kebab-case, e.g., my-app): " PROJECT; \
+		fi; \
+	else \
+		PROJECT="$(PROJECT)"; \
+	fi; \
+	# Get DESCRIPTION (prompt if empty)
+	if [ -z "$(DESCRIPTION)" ]; then \
+		read -p "Project description: " DESCRIPTION; \
+	else \
+		DESCRIPTION="$(DESCRIPTION)"; \
+	fi; \
+	# Get AUTHOR (prompt if empty)
+	if [ -z "$(AUTHOR)" ]; then \
+		read -p "Author/Organization name: " AUTHOR; \
+	else \
+		AUTHOR="$(AUTHOR)"; \
+	fi; \
+	# Derive snake_case and year
+	PROJECT_SNAKE=$$(echo "$$PROJECT" | tr '-' '_'); \
+	YEAR=$$(date +%Y); \
+	# Show summary
+	echo ""; \
+	echo "Applying:"; \
+	echo "  GitHub repo: $$GITHUB_REPO"; \
+	echo "  Project: $$PROJECT ($$PROJECT_SNAKE)"; \
+	echo "  Description: $$DESCRIPTION"; \
+	echo "  Author: $$AUTHOR"; \
+	echo "  Year: $$YEAR"; \
+	echo ""; \
+	# Perform replacements
+	sed -i "s|YOUR-ORG/YOUR-PROJECT-NAME|$$GITHUB_REPO|g" README.md; \
+	sed -i "s|your-project-name|$$PROJECT|g" pyproject.toml; \
+	sed -i "s|Python project using Ralph Loop autonomous development|$$DESCRIPTION|g" pyproject.toml; \
+	sed -i "s|your_project_name|$$PROJECT_SNAKE|g" pyproject.toml; \
+	sed -i "s|\[YEAR\]|$$YEAR|g" LICENSE.md; \
+	sed -i "s|\[YOUR NAME OR ORGANIZATION\]|$$AUTHOR|g" LICENSE.md; \
+	sed -i "s|your-project-name|$$PROJECT|g" .claude/scripts/ralph/init.sh; \
+	sed -i "s|your-project-name|$$PROJECT|g" .claude/templates/ralph/progress.txt.template; \
+	sed -i "s|your-project-name|$$PROJECT|g" .claude/templates/ralph/prd.json.template; \
+	# Rename source directory
+	if [ -d "src/your_project_name" ]; then \
+		mv src/your_project_name "src/$$PROJECT_SNAKE"; \
+	fi; \
+	# Verify replacements
+	REMAINING=$$(grep -r "YOUR-ORG\|your-project-name\|\[YEAR\]\|\[YOUR NAME" . --exclude-dir=.git --exclude="TEMPLATE_USAGE.md" 2>/dev/null | wc -l); \
+	if [ $$REMAINING -gt 0 ]; then \
+		echo ""; \
+		echo "WARNING: Some placeholders may remain. Review with:"; \
+		echo "  grep -r 'YOUR-ORG\|your-project-name' . --exclude-dir=.git"; \
+	fi; \
+	echo ""; \
+	echo "Project setup complete!"
 
 
 # MARK: run markdownlint
@@ -76,7 +148,7 @@ ralph_init:  ## Initialize Ralph loop environment
 	echo "Initializing Ralph loop environment ..."
 	bash .claude/scripts/ralph/init.sh
 
-ralph:  ## Run Ralph autonomous development loop (use ITERATIONS=N to set max iterations)
+ralph_run:  ## Run Ralph autonomous development loop (use ITERATIONS=N to set max iterations)
 	echo "Starting Ralph loop ..."
 	ITERATIONS=$${ITERATIONS:-25}
 	bash .claude/scripts/ralph/ralph.sh $$ITERATIONS

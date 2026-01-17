@@ -3,7 +3,7 @@
 # Ralph Loop - Autonomous iteration script
 #
 # Usage: ./.claude/scripts/ralph/ralph.sh [MAX_ITERATIONS]
-#        make ralph ITERATIONS=5
+#        make ralph_run [ITERATIONS=25]
 #
 # This script orchestrates autonomous task execution by:
 # 1. Reading prd.json for incomplete stories

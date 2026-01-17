@@ -16,22 +16,19 @@ Out-of-the-box Python project template using Ralph Loop autonomous development w
 ## Quick Start
 
 ```bash
-# Setup development environment
+# 1. Customize template with your project details
+make setup_project
+
+# 2. Setup development environment, if not done by devcontainer.json
 make setup_dev
 
-# Initialize Ralph loop
-make ralph_init
-
-# Run autonomous development
-make ralph ITERATIONS=5
+# 3. Write requirements in docs/PRD.md, then run Ralph
+make ralph_init                 # Initialize (creates prd.json)
+make ralph_run [ITERATIONS=25]  # Run autonomous development
+make ralph_status               # Check progress
 ```
 
-## Ralph Loop Workflow
-
-1. **Write requirements** in `docs/PRD.md`
-2. **Generate tasks**: Use `generating-prd` skill to create `docs/ralph/prd.json`
-3. **Run Ralph loop**: `make ralph` executes tasks autonomously
-4. **Monitor progress**: `make ralph_status`
+For detailed setup and usage, see [docs/TEMPLATE_USAGE.md](docs/TEMPLATE_USAGE.md).
 
 ## Development
 
@@ -45,7 +42,7 @@ make type_check
 # Run tests
 make test_all
 
-# Complete validation
+# Complete validation using all of the above
 make validate
 ```
 
@@ -72,7 +69,3 @@ Makefile         # Build automation and Ralph orchestration
 - User Experience, Joy, and Success
 
 See `.claude/rules/core-principles.md` for full guidelines.
-
-## License
-
-BSD 3-Clause License (see LICENSE.md)
