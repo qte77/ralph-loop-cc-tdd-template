@@ -34,6 +34,25 @@ make ralph_reorganize NEW_PRD=docs/PRD-v2.md [VERSION=2]  # Archive and start ne
 
 For detailed setup and usage, see [docs/TEMPLATE_USAGE.md](docs/TEMPLATE_USAGE.md).
 
+## Workflow
+
+```text
+Document Flow:
+  UserStory.md → PRD.md → prd.json → Implementation → progress.txt
+
+Human Workflow:
+  README.md → Write UserStory.md, PRD.md → Run Makefile commands
+
+Agent Workflow:
+  PRD.md → prd.json (generating-prd skill) → Ralph Loop → src/ + tests/
+  Uses: .claude/skills/, .claude/rules/
+
+Mandatory for Both:
+  CONTRIBUTING.md - Core principles (KISS, DRY, YAGNI)
+  Makefile        - Build automation and validation
+  .gitmessage     - Commit message format
+```
+
 ## Project Structure
 
 ```
