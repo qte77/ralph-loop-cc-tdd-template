@@ -1,5 +1,8 @@
 name: pytest
 
+permissions:
+  contents: read
+
 on:
   workflow_dispatch:
 
@@ -10,15 +13,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v5
         with:
-          python-version: '3.12'
+          enable-cache: true
+
+      - name: Set up Python
+        run: uv python install
 
       - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install pytest
+        run: uv sync --all-groups
 
       - name: Run tests
-        run: pytest
+        run: make test_all
