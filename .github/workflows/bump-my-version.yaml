@@ -55,7 +55,7 @@ jobs:
       - name: Set git cfg and create branch
         id: create_branch
         run: |
-          git config user.email "bumped@qte77.gha"
+          git config user.email "bump-my-version@github-actions.local"
           git config user.name "bump-my-version"
           git checkout -b "${{ env.BRANCH_NEW }}"
           echo "branch_new=${{ env.BRANCH_NEW }}" >> $GITHUB_OUTPUT

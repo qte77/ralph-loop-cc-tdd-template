@@ -13,19 +13,28 @@ You are executing a single story from the Ralph autonomous development loop.
 
 ## Your Task
 
-1. **Read `docs/ralph/prd.json`** to understand the current story
-2. **Implement the story** following acceptance criteria exactly
-3. **Create/update tests** for the implemented functionality
-4. **Ensure `make validate` passes** before completing
+Follow TDD workflow below. Tests MUST be written FIRST.
 
-## Workflow
+## Workflow (TDD - MANDATORY)
 
-1. Read current story details from prd.json
-2. Study existing code patterns in `src/app/`
-3. Implement minimal solution matching acceptance criteria
-4. Create focused tests in `tests/`
-5. Run `make validate` and fix any issues
-6. Verify all acceptance criteria are met
+**You MUST follow Test-Driven Development (RED → GREEN → REFACTOR):**
+
+1. **RED**: Read story from prd.json, write FAILING tests for acceptance criteria
+   - Create test file in `tests/` (e.g., `tests/test_messenger.py`)
+   - Write tests that verify each acceptance criterion
+   - Run tests - they MUST fail (code doesn't exist yet)
+
+2. **GREEN**: Study patterns in `src/`, implement MINIMAL code to pass tests
+   - Create/modify implementation file (e.g., `src/agentbeats/messenger.py`)
+   - Write simplest code that makes tests pass
+   - Run tests - they MUST pass now
+
+3. **REFACTOR**: Clean up code while keeping tests passing
+   - Remove duplication (DRY)
+   - Simplify logic (KISS)
+   - Ensure `make validate` passes
+
+4. Verify all acceptance criteria met
 
 ## Available Skills
 
