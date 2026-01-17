@@ -1,7 +1,7 @@
 ---
 title: Ralph Loop Usage
 version: 1.0
-applies-to: all-agents
+applies-to: Agents and humans
 purpose: Ralph loop autonomous execution system commands and workflow
 ---
 

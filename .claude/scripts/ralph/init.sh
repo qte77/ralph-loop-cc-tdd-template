@@ -120,7 +120,7 @@ initialize_progress() {
 # Ralph Loop Progress Log
 
 Started: $(date)
-Project: Agents-eval
+Project: your-project-name
 
 This file tracks the progress of Ralph loop autonomous execution.
 Each iteration appends its results here.

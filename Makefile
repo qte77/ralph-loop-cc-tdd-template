@@ -5,7 +5,7 @@
 
 .SILENT:
 .ONESHELL:
-.PHONY: setup_dev setup_dev_full setup_claude_code setup_markdownlint run_markdownlint run_cli run_agent build_agent test_agent
+.PHONY: setup_dev setup_claude_code setup_markdownlint run_markdownlint ruff test_all type_check validate quick_validate ralph_init ralph ralph_status ralph_clean help
 .DEFAULT_GOAL := help
 
 
@@ -19,10 +19,6 @@ setup_dev:  ## Install uv and deps, Download and start Ollama
 	echo "npm version: $$(npm --version)"
 	$(MAKE) -s setup_claude_code
 	$(MAKE) -s setup_markdownlint
-	
-setup_dev_full: ## Complete dev setup including Opik tracing stack
-	$(MAKE) -s setup_dev
-	$(MAKE) -s setup_opik
 
 setup_claude_code:  ## Setup claude code CLI, node.js and npm have to be present
 	echo "Setting up Claude Code CLI ..."
@@ -46,13 +42,6 @@ run_markdownlint:  ## Lint markdown files. Usage from root dir: make run_markdow
 	markdownlint $(INPUT_FILES) --fix
 
 
-# MARK: run app
-
-
-run_cli:  ## Run app on CLI only. Usage: make run_cli ARGS="--help" or make run_cli ARGS="--download-peerread-samples-only"
-	echo PYTHONPATH=$(SRC_PATH) uv run python $(CLI_PATH) $(ARGS)
-
-
 # MARK: Sanity
 
 
@@ -62,10 +51,6 @@ ruff:  ## Lint: Format and check with ruff
 
 test_all:  ## Run all tests
 	uv run pytest
-
-coverage_all:  ## Get test coverage
-	uv run coverage run -m pytest || true
-	uv run coverage report -m
 
 type_check:  ## Check for static typing errors
 	uv run pyright src
@@ -82,53 +67,6 @@ quick_validate:  ## Fast development cycle validation
 	$(MAKE) -s ruff
 	-$(MAKE) -s type_check
 	echo "Quick validation completed (check output for any failures)"
-
-# MARK: opik
-
-setup_opik:  ## Complete Opik setup (start services + configure environment)
-	echo "Setting up Opik tracing stack..."
-	$(MAKE) start_opik
-	echo "Waiting for services to be healthy..."
-	sleep 20
-	$(MAKE) setup_opik_env
-	echo "Opik setup complete!"
-
-setup_opik_env:  ## Setup Opik environment variables for local development
-	echo "Setting up Opik environment variables ..."
-	echo "export OPIK_URL_OVERRIDE=http://localhost:8080" >> ~/.bashrc  # do not send to comet.com/api
-	echo "export OPIK_WORKSPACE=peerread-evaluation" >> ~/.bashrc
-	echo "export OPIK_PROJECT_NAME=peerread-evaluation" >> ~/.bashrc
-	echo "Environment variables added to ~/.bashrc"
-	echo "Run: source ~/.bashrc"
-
-start_opik:  ## Start local Opik tracing with ClickHouse database
-	# https://github.com/comet-ml/opik/blob/main/deployment/docker-compose/docker-compose.yaml
-	# https://www.comet.com/docs/opik/self-host/local_deployment/
-	echo "Starting Opik stack with ClickHouse ..."
-	docker-compose -f docker-compose.opik.yaml up -d
-	echo "Frontend: http://localhost:5173"
-	echo "Backend API: http://localhost:8080"
-	echo "ClickHouse: http://localhost:8123"
-
-stop_opik:  ## Stop local Opik tracing stack
-	echo "Stopping Opik stack ..."
-	docker-compose -f docker-compose.opik.yaml down
-
-clean_opik:  ## Stop Opik and remove all trace data (WARNING: destructive)
-	echo "WARNING: This will remove all Opik trace data!"
-	echo "Press Ctrl+C to cancel, Enter to continue..."
-	read
-	docker-compose -f docker-compose.opik.yaml down -v
-
-status_opik:  ## Check Opik services health status
-	echo "Checking Opik services status ..."
-	docker-compose -f docker-compose.opik.yaml ps
-	echo "API Health:"
-	curl -f http://localhost:8080/health-check 2>/dev/null && \
-		echo "Opik API healthy" || echo "Opik API not responding"
-	echo "ClickHouse:"
-	curl -s http://localhost:8123/ping 2>/dev/null && \
-		echo "ClickHouse healthy" || echo "ClickHouse not responding"
 
 
 # MARK: ralph
@@ -163,19 +101,6 @@ ralph_clean:  ## Reset Ralph state (WARNING: removes prd.json and progress.txt)
 	read
 	rm -f docs/ralph/prd.json docs/ralph/progress.txt
 	echo "Ralph state cleaned. Run 'make ralph_init' to reinitialize."
-
-
-# MARK: agentbeats
-
-
-run_agent:  ## Start AgentBeats server. Usage: make run_agent or make run_agent ARGS="--port 8080"
-	PYTHONPATH=src uv run python -m agentbeats.server $(ARGS)
-
-build_agent:  ## Build AgentBeats Docker image
-	docker build -t green-agent .
-
-test_agent:  ## Run agentbeats tests
-	uv run pytest tests/
 
 
 # MARK: help

@@ -1,5 +1,5 @@
 {
-  "project": "Agents-eval",
+  "project": "your-project-name",
   "source": "docs/PRD.md",
   "generated": "TEMPLATE",
   "description": "Task tracking for Ralph loop autonomous execution",

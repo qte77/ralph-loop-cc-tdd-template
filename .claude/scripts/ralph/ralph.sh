@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Ralph Loop - Autonomous iteration script for Agents-eval
+# Ralph Loop - Autonomous iteration script
 #
 # Usage: ./.claude/scripts/ralph/ralph.sh [MAX_ITERATIONS]
 #        make ralph ITERATIONS=5
@@ -20,7 +20,7 @@ MAX_ITERATIONS=${1:-10}
 PRD_JSON="docs/ralph/prd.json"
 PROGRESS_FILE="docs/ralph/progress.txt"
 PROMPT_FILE=".claude/scripts/ralph/prompt.md"
-BRANCH_PREFIX="ralph/story-"
+BRANCH_PREFIX="ralph/story-"s
 
 # Colors for output
 RED='\033[0;31m'
