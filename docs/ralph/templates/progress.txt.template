@@ -12,7 +12,7 @@ Each iteration appends its results here.
 
 Ralph loop infrastructure:
 - Scripts: scripts/ralph/ (ralph.sh, init.sh, reorganize_prd.sh)
-- Templates: .claude/templates/ralph/ (prd.json.template, progress.txt.template)
+- Templates: docs/ralph/templates/ (prd.json.template, progress.txt.template)
 - State files: docs/ralph/ (prd.json, progress.txt)
 - Skills: .claude/skills/ (designing-backend, implementing-python, reviewing-code, generating-prd)
 

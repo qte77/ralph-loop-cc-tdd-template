@@ -110,9 +110,9 @@ initialize_progress() {
     if [ ! -f "docs/ralph/progress.txt" ]; then
         log_info "Initializing progress.txt from template..."
 
-        if [ -f ".claude/templates/ralph/progress.txt.template" ]; then
+        if [ -f "docs/ralph/templates/progress.txt.template" ]; then
             # Copy from template and replace {{DATE}} placeholder
-            sed "s/{{DATE}}/$(date)/" .claude/templates/ralph/progress.txt.template > docs/ralph/progress.txt
+            sed "s/{{DATE}}/$(date)/" docs/ralph/templates/progress.txt.template > docs/ralph/progress.txt
             log_success "progress.txt initialized from template"
         else
             log_warn "Template not found, creating default progress.txt..."
@@ -140,9 +140,9 @@ check_prd_json() {
     if [ ! -f "docs/ralph/prd.json" ]; then
         log_warn "prd.json not found"
 
-        if [ -f ".claude/templates/ralph/prd.json.template" ]; then
+        if [ -f "docs/ralph/templates/prd.json.template" ]; then
             log_info "Creating prd.json from template..."
-            cp .claude/templates/ralph/prd.json.template docs/ralph/prd.json
+            cp docs/ralph/templates/prd.json.template docs/ralph/prd.json
             # Update timestamp
             sed -i "s/\"TEMPLATE\"/\"$(date -u +"%Y-%m-%dT%H:%M:%SZ")\"/" docs/ralph/prd.json
             log_success "prd.json created from template"

@@ -86,8 +86,8 @@ setup_project:  ## Customize template with your project details
 	sed -i "s|\[YEAR\]|$$YEAR|g" LICENSE.md; \
 	sed -i "s|\[YOUR NAME OR ORGANIZATION\]|$$AUTHOR|g" LICENSE.md; \
 	sed -i "s|your-project-name|$$PROJECT|g" scripts/ralph/init.sh; \
-	sed -i "s|your-project-name|$$PROJECT|g" .claude/templates/ralph/progress.txt.template; \
-	sed -i "s|your-project-name|$$PROJECT|g" .claude/templates/ralph/prd.json.template; \
+	sed -i "s|your-project-name|$$PROJECT|g" docs/ralph/templates/progress.txt.template; \
+	sed -i "s|your-project-name|$$PROJECT|g" docs/ralph/templates/prd.json.template; \
 	# Rename source directory
 	if [ -d "src/your_project_name" ]; then \
 		mv src/your_project_name "src/$$PROJECT_SNAKE"; \
