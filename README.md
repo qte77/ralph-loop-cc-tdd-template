@@ -36,12 +36,13 @@ For detailed setup and usage, see [docs/TEMPLATE_USAGE.md](docs/TEMPLATE_USAGE.m
 .claude/
   commands/      # Slash commands (commit, phase-*, etc.)
   rules/         # Auto-applied coding principles (KISS, DRY, YAGNI)
-  scripts/ralph/ # Ralph loop orchestration scripts
   skills/        # Specialized skills (designing-backend, implementing-python, etc.)
   templates/     # PRD and progress templates
 docs/
   PRD.md         # Requirements document (input to Ralph loop)
   ralph/         # Ralph loop state (prd.json, progress.txt)
+scripts/
+  ralph/         # Ralph loop orchestration
 Makefile         # Build automation and Ralph orchestration
 ```
 
