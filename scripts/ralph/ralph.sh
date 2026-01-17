@@ -19,7 +19,7 @@ set -euo pipefail
 MAX_ITERATIONS=${1:-10}
 PRD_JSON="docs/ralph/prd.json"
 PROGRESS_FILE="docs/ralph/progress.txt"
-PROMPT_FILE="scripts/ralph/prompt.md"
+PROMPT_FILE="docs/ralph/templates/prompt.md"
 BRANCH_PREFIX="ralph/story-"
 
 # Colors for output
