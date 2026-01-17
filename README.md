@@ -1,6 +1,6 @@
 # Python Ralph-Loop Template
 
-> What at time to be alive
+> What a time to be alive
 
 Out-of-the-box Python project template using Ralph Loop autonomous development with Claude Code.
 
@@ -13,6 +13,17 @@ Out-of-the-box Python project template using Ralph Loop autonomous development w
 [![pytest](https://github.com/YOUR-ORG/YOUR-PROJECT-NAME/actions/workflows/pytest.yaml/badge.svg)](https://github.com/YOUR-ORG/YOUR-PROJECT-NAME/actions/workflows/pytest.yaml)
 [![Link Checker](https://github.com/YOUR-ORG/YOUR-PROJECT-NAME/actions/workflows/links-fail-fast.yaml/badge.svg)](https://github.com/YOUR-ORG/YOUR-PROJECT-NAME/actions/workflows/links-fail-fast.yaml)
 [![Deploy Docs](https://github.com/YOUR-ORG/YOUR-PROJECT-NAME/actions/workflows/generate-deploy-mkdocs-ghpages.yaml/badge.svg)](https://github.com/YOUR-ORG/YOUR-PROJECT-NAME/actions/workflows/generate-deploy-mkdocs-ghpages.yaml)
+
+## Features
+
+- **Ralph Loop** - Autonomous development using a shell loop
+- **Claude Code** - Pre-configured skills, plugins, rules, and commands for AI-assisted development
+- **Makefile** - Build automation, Ralph orchestration, and validation commands
+- **Python Tooling** - ruff (linting/formatting), pyright (type checking), pytest (testing)
+- **MkDocs** - Auto-generated documentation with GitHub Pages deployment
+- **GitHub Actions** - CI/CD workflows (CodeQL, ruff, pyright, pytest, link checking, docs deployment)
+- **DevContainers** - Template (Alpine ~10MB) and actual project (Python/Node/Docker ~1GB+)
+- **VS Code** - Workspace settings, tasks, and extensions for optimal Python development
 
 ## Quick Start
 
@@ -29,18 +40,13 @@ make ralph_run [ITERATIONS=25]  # Run autonomous development
 make ralph_status               # Check progress
 
 # 4. Post-run options
-make ralph_clean                # Reset state (removes prd.json, progress.txt)
-make ralph_reorganize NEW_PRD=docs/PRD-v2.md [VERSION=2]  # Archive and start new iteration
+# Reset state (removes prd.json, progress.txt)
+make ralph_clean
+# Archive and start new iteration
+make ralph_reorganize NEW_PRD=docs/PRD-v2.md [VERSION=2]
 ```
 
 For detailed setup and usage, see [docs/TEMPLATE_USAGE.md](docs/TEMPLATE_USAGE.md).
-
-## DevContainer
-
-- **`template/`** - Template dev (Alpine ~10MB)
-- **`project/`** - Project dev (Python + Node + Docker ~1GB+)
-
-See [.devcontainer/README.md](.devcontainer/README.md).
 
 ## Workflow
 
@@ -49,7 +55,7 @@ Document Flow:
   UserStory.md → PRD.md → prd.json → Implementation → progress.txt
 
 Human Workflow:
-  README.md → Write UserStory.md, PRD.md → Run Makefile commands
+  README.md → Write UserStory.md (Why) → Write PRD.md (What) → Run Makefile commands
 
 Agent Workflow:
   PRD.md → prd.json (generating-prd skill) → Ralph Loop → src/ + tests/
@@ -59,22 +65,6 @@ Mandatory for Both:
   CONTRIBUTING.md - Core principles (KISS, DRY, YAGNI)
   Makefile        - Build automation and validation
   .gitmessage     - Commit message format
-```
-
-## Project Structure
-
-```
-.claude/
-  commands/      # Slash commands (commit, phase-*, etc.)
-  rules/         # Auto-applied coding principles (KISS, DRY, YAGNI)
-  skills/        # Specialized skills (designing-backend, implementing-python, etc.)
-  templates/     # PRD and progress templates
-docs/
-  PRD.md         # Requirements document (input to Ralph loop)
-  ralph/         # Ralph loop state (prd.json, progress.txt)
-scripts/
-  ralph/         # Ralph loop orchestration
-Makefile         # Build automation and Ralph orchestration
 ```
 
 ## Contributing
