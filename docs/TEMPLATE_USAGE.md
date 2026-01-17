@@ -2,6 +2,13 @@
 
 Python project template with Ralph Loop autonomous development.
 
+## DevContainer
+
+- **`template/`** - Template dev (Alpine ~10MB)
+- **`project/`** - Project dev (Python + Node + Docker ~1GB+)
+
+See `.devcontainer/README.md`.
+
 ## Setup Steps
 
 ### 1. Clone and Customize
@@ -58,6 +65,7 @@ Template includes `context7` and `exa` MCP servers. Remove from `.claude/setting
 ```
 your-project/
 ├── .claude/              # Claude Code configuration
+├── .devcontainer/        # DevContainer configs (template/ & project/)
 ├── docs/
 │   ├── PRD.md           # Product requirements (edit this!)
 │   ├── ralph/           # Ralph state (gitignored)
@@ -79,7 +87,8 @@ make validate         # Run all checks
 make ralph_init       # Initialize Ralph
 make ralph_run        # Run autonomous dev
 make ralph_status     # Check progress
-make ralph_reorganize # Archive PRD and start new iteration
+make ralph_clean      # Reset state (removes prd.json, progress.txt)
+make ralph_reorganize # Archive and start new iteration
 make help             # Show all commands
 ```
 

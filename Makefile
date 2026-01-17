@@ -66,9 +66,17 @@ setup_project:  ## Customize template with your project details
 	else \
 		AUTHOR="$(AUTHOR)"; \
 	fi; \
-	# Derive snake_case and year
+	# Get Python version (prompt if empty)
+	if [ -z "$(PYTHON_VERSION)" ]; then \
+		read -p "Python version (e.g., 3.13) [default: 3.13]: " PYTHON_VERSION; \
+		PYTHON_VERSION=$${PYTHON_VERSION:-3.13}; \
+	else \
+		PYTHON_VERSION="$(PYTHON_VERSION)"; \
+	fi; \
+	# Derive snake_case, year, and Python version short
 	PROJECT_SNAKE=$$(echo "$$PROJECT" | tr '-' '_'); \
 	YEAR=$$(date +%Y); \
+	PYTHON_VERSION_SHORT=$$(echo "$$PYTHON_VERSION" | tr -d '.'); \
 	# Show summary
 	echo ""; \
 	echo "Applying:"; \
@@ -77,23 +85,33 @@ setup_project:  ## Customize template with your project details
 	echo "  Description: $$DESCRIPTION"; \
 	echo "  Author: $$AUTHOR"; \
 	echo "  Year: $$YEAR"; \
+	echo "  Python version: $$PYTHON_VERSION (py$$PYTHON_VERSION_SHORT)"; \
 	echo ""; \
 	# Perform replacements
 	sed -i "s|YOUR-ORG/YOUR-PROJECT-NAME|$$GITHUB_REPO|g" README.md; \
-	sed -i "s|your-project-name|$$PROJECT|g" pyproject.toml; \
-	sed -i "s|Python project using Ralph Loop autonomous development|$$DESCRIPTION|g" pyproject.toml; \
+	sed -i "s|Python Ralph-Loop Template|$$PROJECT|g" README.md; \
+	sed -i "s|> What at time to be alive|$$DESCRIPTION|g" README.md; \
+	sed -i "/Out-of-the-box Python project template using Ralph Loop/d" README.md; \
+	sed -i "s|\\[PROJECT NAME\\]|$$PROJECT|g" pyproject.toml; \
+	sed -i "s|\\[PROJECT DESCRIPTION\\]|$$DESCRIPTION|g" pyproject.toml; \
+	sed -i "s|\\[PYTHON VERSION\\]|$$PYTHON_VERSION|g" pyproject.toml; \
+	sed -i "s|\\[PYTHON VERSION SHORT\\]|$$PYTHON_VERSION_SHORT|g" pyproject.toml; \
 	sed -i "s|your_project_name|$$PROJECT_SNAKE|g" pyproject.toml; \
 	sed -i "s|\[YEAR\]|$$YEAR|g" LICENSE.md; \
 	sed -i "s|\[YOUR NAME OR ORGANIZATION\]|$$AUTHOR|g" LICENSE.md; \
 	sed -i "s|your-project-name|$$PROJECT|g" scripts/ralph/init.sh; \
 	sed -i "s|your-project-name|$$PROJECT|g" docs/ralph/templates/progress.txt.template; \
 	sed -i "s|your-project-name|$$PROJECT|g" docs/ralph/templates/prd.json.template; \
+	sed -i "s|\\[PROJECT NAME\\]|$$PROJECT|g" mkdocs.yaml; \
+	sed -i "s|\\[PROJECT DESCRIPTION\\]|$$DESCRIPTION|g" mkdocs.yaml; \
+	sed -i "s|\\[GITHUB REPO\\]|$$GITHUB_REPO|g" mkdocs.yaml; \
+	sed -i "s|\\[PYTHON VERSION\\]|$$PYTHON_VERSION|g" .devcontainer/project/devcontainer.json; \
 	# Rename source directory
 	if [ -d "src/your_project_name" ]; then \
 		mv src/your_project_name "src/$$PROJECT_SNAKE"; \
 	fi; \
 	# Verify replacements
-	REMAINING=$$(grep -r "YOUR-ORG\|your-project-name\|\[YEAR\]\|\[YOUR NAME" . --exclude-dir=.git --exclude="TEMPLATE_USAGE.md" 2>/dev/null | wc -l); \
+	REMAINING=$$(grep -r "YOUR-ORG\|\[PROJECT NAME\]\|\[YEAR\]\|\[YOUR NAME\|\[PROJECT DESCRIPTION\]\|\[GITHUB REPO\]\|\[PYTHON VERSION" . --exclude-dir=.git --exclude="TEMPLATE_USAGE.md" 2>/dev/null | wc -l); \
 	if [ $$REMAINING -gt 0 ]; then \
 		echo ""; \
 		echo "WARNING: Some placeholders may remain. Review with:"; \

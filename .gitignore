@@ -44,7 +44,3 @@ site/
 
 # type checking
 .mypy_cache/
-
-# Ralph loop state files (runtime generated)
-docs/ralph/prd.json
-docs/ralph/progress.txt

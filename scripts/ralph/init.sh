@@ -77,7 +77,7 @@ check_project_structure() {
         "Makefile"
         ".claude/skills/generating-prd/SKILL.md"
         "scripts/ralph/ralph.sh"
-        "scripts/ralph/prompt.md"
+        "docs/ralph/templates/prompt.md"
     )
 
     local missing=0

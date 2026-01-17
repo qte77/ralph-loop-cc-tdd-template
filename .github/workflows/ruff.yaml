@@ -1,8 +1,7 @@
----
-# https://github.com/astral-sh/ruff-action
-# https://github.com/astral-sh/ruff
 name: ruff
-on: 
+permissions:
+  contents: read
+on:
   push:
   pull_request:
     types: [closed]
@@ -15,5 +14,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: astral-sh/ruff-action@v3
-...
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+      # Use Python version from pyproject.toml to prevent version divergence
+      # Workflow cache prevents long load times after initial setup
+      - run: uv python install
+      - run: uv sync --group dev
+      - run: make ruff

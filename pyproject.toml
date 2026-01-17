@@ -1,8 +1,8 @@
 [project]
-name = "your-project-name"
+name = "[PROJECT NAME]"
 version = "0.0.0"
-description = "Python project using Ralph Loop autonomous development"
-requires-python = ">=3.13"
+description = "[PROJECT DESCRIPTION]"
+requires-python = ">=[PYTHON VERSION]"
 readme = "README.md"
 license = { file = "LICENSE.md" }
 
@@ -28,14 +28,14 @@ dev-dependencies = [
 
 [tool.ruff]
 line-length = 100
-target-version = "py313"
+target-version = "py[PYTHON VERSION SHORT]"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "N", "W", "UP"]
 ignore = []
 
 [tool.pyright]
-pythonVersion = "3.13"
+pythonVersion = "[PYTHON VERSION]"
 typeCheckingMode = "basic"
 reportMissingImports = true
 reportMissingTypeStubs = false
