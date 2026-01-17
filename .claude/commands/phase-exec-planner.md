@@ -57,7 +57,7 @@ Generate `docs/ralph/prd.json` for autonomous execution:
 }
 ```
 
-**Output:** "Generated prd.json with N stories. Run: `make ralph ITERATIONS=N`"
+**Output:** "Generated prd.json with N stories. Run: `make ralph_run ITERATIONS=N`"
 
 **Key skills:**
 
@@ -69,4 +69,4 @@ Generate `docs/ralph/prd.json` for autonomous execution:
 
 - Without "ralph" parameter: Detailed implementation plan (manual execution)
 - With "ralph" parameter: Plan + `docs/ralph/prd.json` (autonomous execution
-  via `make ralph`)
+  via `make ralph_run`)

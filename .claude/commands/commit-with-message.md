@@ -27,7 +27,7 @@ Format:
 
 <body>
 
-Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>
+Co-Authored-By: Claude <noreply@anthropic.com>
 ```
 
 Types: feat, fix, refactor, test, docs, chore

@@ -12,8 +12,8 @@
   
   "permissions": {
     "allow": [
-      "Bash(bash:.claude/scripts/ralph/*.sh:*)",
-      "Bash(chmod:+x:.claude/scripts/ralph/*.sh)",
+      "Bash(bash:scripts/ralph/*.sh:*)",
+      "Bash(chmod:+x:scripts/ralph/*.sh)",
       "Bash(date:*)",
       "Bash(git:diff:*)",
       "Bash(git:log:*)",
