@@ -26,6 +26,10 @@ make setup_dev
 make ralph_init                 # Initialize (creates prd.json)
 make ralph_run [ITERATIONS=25]  # Run autonomous development
 make ralph_status               # Check progress
+
+# 4. Post-run options
+make ralph_clean                # Reset state (removes prd.json, progress.txt)
+make ralph_reorganize NEW_PRD=docs/PRD-v2.md [VERSION=2]  # Archive and start new iteration
 ```
 
 For detailed setup and usage, see [docs/TEMPLATE_USAGE.md](docs/TEMPLATE_USAGE.md).

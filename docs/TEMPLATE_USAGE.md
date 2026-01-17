@@ -79,7 +79,8 @@ make validate         # Run all checks
 make ralph_init       # Initialize Ralph
 make ralph_run        # Run autonomous dev
 make ralph_status     # Check progress
-make ralph_reorganize # Archive PRD and start new iteration
+make ralph_clean      # Reset state (removes prd.json, progress.txt)
+make ralph_reorganize # Archive and start new iteration
 make help             # Show all commands
 ```
 
