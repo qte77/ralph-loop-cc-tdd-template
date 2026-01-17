@@ -22,7 +22,3 @@ Template work? → `template/` | Project work? → `project/`
 ## Switching
 
 `Cmd/Ctrl+Shift+P` → "Dev Containers: Rebuild and Reopen in Container"
-
-## Cleanup
-
-Old folders `minimal/` and `full/` can be deleted - they're superseded by `template/` and `project/`.
