@@ -88,6 +88,9 @@ setup_project:  ## Customize template with your project details
 	sed -i "s|your-project-name|$$PROJECT|g" scripts/ralph/init.sh; \
 	sed -i "s|your-project-name|$$PROJECT|g" docs/ralph/templates/progress.txt.template; \
 	sed -i "s|your-project-name|$$PROJECT|g" docs/ralph/templates/prd.json.template; \
+	sed -i "s|<gha_sed_site_name_here>|$$PROJECT|g" mkdocs.yaml; \
+	sed -i "s|<gha_sed_site_description_here>|$$DESCRIPTION|g" mkdocs.yaml; \
+	sed -i "s|<gha_sed_repo_url_here>|https://github.com/$$GITHUB_REPO|g" mkdocs.yaml; \
 	# Rename source directory
 	if [ -d "src/your_project_name" ]; then \
 		mv src/your_project_name "src/$$PROJECT_SNAKE"; \
