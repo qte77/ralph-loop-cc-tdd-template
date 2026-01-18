@@ -29,6 +29,7 @@ Out-of-the-box Python project template using Ralph Loop autonomous development w
 
 ```bash
 # 1. Customize template with your project details
+# The devcontainer needs a rebuild, if the python version was changed
 make setup_project
 
 # 2. Setup development environment, if not done by devcontainer.json
@@ -52,10 +53,10 @@ For detailed setup and usage, see [docs/TEMPLATE_USAGE.md](docs/TEMPLATE_USAGE.m
 
 ```text
 Document Flow:
-  UserStory.md → PRD.md → prd.json → Implementation → progress.txt
+  UserStory.md (Why) → PRD.md (What) → prd.json → Implementation → progress.txt
 
 Human Workflow:
-  README.md → Write UserStory.md (Why) → Write PRD.md (What) → Run Makefile commands
+  README.md → Write UserStory.md → Write PRD.md → Run Makefile commands
 
 Agent Workflow:
   PRD.md → prd.json (generating-prd skill) → Ralph Loop → src/ + tests/

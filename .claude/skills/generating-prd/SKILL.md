@@ -22,24 +22,14 @@ prd.json format.
 
 ## PRD.json Schema
 
-```json
-{
-  "project": "your-project-name",
-  "source": "docs/PRD.md",
-  "generated": "YYYY-MM-DD HH:MM:SS",
-  "stories": [
-    {
-      "id": "STORY-001",
-      "title": "Brief story title",
-      "description": "What needs to be implemented",
-      "acceptance": ["Criteria 1", "Criteria 2"],
-      "files": ["expected/file/paths.py"],
-      "passes": false,
-      "completed_at": null
-    }
-  ]
-}
-```
+See `docs/ralph/templates/prd.json.template` for the complete schema and structure.
+
+Required fields:
+- `project`: The current project name
+- `desciption`: A concise project description
+- `source`: 'docs/PRD.md'
+- `generated`: "YYYY-MM-DD HH:MM:SS"
+- `stories`: Array of story objects (see below)
 
 ## Story Extraction Rules
 
@@ -77,10 +67,9 @@ Before saving prd.json:
 - [ ] Acceptance criteria are specific and testable
 - [ ] File paths match project structure
 
-## Example Conversion
+## Example Story Conversion
 
 **From PRD.md**:
-
 ```markdown
 ## Functional Requirements
 ### CLI
@@ -88,27 +77,24 @@ Before saving prd.json:
   - Environment setup commands: make setup_dev
 ```
 
-**To prd.json**:
-
+**To prd.json story**:
 ```json
 {
-  "stories": [
-    {
-      "id": "STORY-001",
-      "title": "Add make setup_dev command",
-      "description": "Create Makefile recipe for development environment setup",
-      "acceptance": [
-        "Makefile contains setup_dev recipe",
-        "Recipe installs all dev dependencies",
-        "Recipe passes validation checks"
-      ],
-      "files": ["Makefile"],
-      "passes": false,
-      "completed_at": null
-    }
-  ]
+  "id": "STORY-001",
+  "title": "Add make setup_dev command",
+  "description": "Create Makefile recipe for development environment setup",
+  "acceptance": [
+    "Makefile contains setup_dev recipe",
+    "Recipe installs all dev dependencies",
+    "Recipe passes validation checks"
+  ],
+  "files": ["Makefile"],
+  "passes": false,
+  "completed_at": null
 }
 ```
+
+Use `docs/ralph/templates/prd.json.template` as the base structure and populate the stories array.
 
 ## Usage
 
