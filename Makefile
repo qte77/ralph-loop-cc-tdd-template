@@ -105,7 +105,7 @@ setup_project:  ## Customize template with your project details
 	sed -i "s|\\[PROJECT NAME\\]|$$PROJECT|g" mkdocs.yaml; \
 	sed -i "s|\\[PROJECT DESCRIPTION\\]|$$DESCRIPTION|g" mkdocs.yaml; \
 	sed -i "s|\\[GITHUB REPO\\]|$$GITHUB_REPO|g" mkdocs.yaml; \
-	sed -i "s|\\[PYTHON VERSION\\]|$$PYTHON_VERSION|g" .devcontainer/project/devcontainer.json; \
+	sed -i "s|devcontainers\/python|devcontainers\/python:$$PYTHON_VERSION|g" .devcontainer/project/devcontainer.json; \
 	# Rename source directory
 	if [ -d "src/your_project_name" ]; then \
 		mv src/your_project_name "src/$$PROJECT_SNAKE"; \

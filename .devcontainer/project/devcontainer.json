@@ -1,6 +1,6 @@
 {
   "name": "Project DevEnv",
-  "image": "mcr.microsoft.com/vscode/devcontainers/python:[PYTHON VERSION]",
+  "image": "mcr.microsoft.com/vscode/devcontainers/python",
   "features": {
     "ghcr.io/devcontainers/features/node:1": {},
     "ghcr.io/devcontainers/features/docker-in-docker:2": {

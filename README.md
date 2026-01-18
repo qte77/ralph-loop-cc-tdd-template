@@ -2,7 +2,7 @@
 
 > What a time to be alive
 
-Out-of-the-box Python project template using Ralph Loop autonomous development with Claude Code.
+Out-of-the-box Python project template using Ralph Loop autonomous development with Claude Code (plugins, skills, rules), TDD, uv, ruff, pyright, pytest.
 
 ![Version](https://img.shields.io/badge/version-0.0.0-58f4c2.svg)
 [![License](https://img.shields.io/badge/license-BSD3Clause-58f4c2.svg)](LICENSE.md)
