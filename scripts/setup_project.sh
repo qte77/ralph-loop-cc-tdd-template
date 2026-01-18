@@ -144,23 +144,23 @@ echo "  Python version: $PYTHON_VERSION (py$PYTHON_VERSION_SHORT)"
 echo ""
 
 # Perform replacements
-sed -i "s|YOUR-ORG/YOUR-PROJECT-NAME|$GITHUB_REPO|g" README.md
+sed -i "s|\\[GITHUB-REPO\\]|$GITHUB_REPO|g" README.md
 sed -i "s|Python Ralph-Loop Template|$PROJECT|g" README.md
 sed -i "s|> What a time to be alive|$DESCRIPTION|g" README.md
 sed -i "/Out-of-the-box Python project template using Ralph Loop autonomous development/{N;d;}" README.md
-sed -i "s|\\[PROJECT NAME\\]|$PROJECT|g" pyproject.toml
-sed -i "s|\\[PROJECT DESCRIPTION\\]|$DESCRIPTION|g" pyproject.toml
-sed -i "s|\\[PYTHON VERSION\\]|$PYTHON_VERSION|g" pyproject.toml
-sed -i "s|\\[PYTHON VERSION SHORT\\]|$PYTHON_VERSION_SHORT|g" pyproject.toml
-sed -i "s|your_project_name|$APP_NAME|g" pyproject.toml
+sed -i "s|\\[PROJECT-NAME\\]|$PROJECT|g" pyproject.toml
+sed -i "s|\\[PROJECT-DESCRIPTION\\]|$DESCRIPTION|g" pyproject.toml
+sed -i "s|\\[PYTHON-VERSION\\]|$PYTHON_VERSION|g" pyproject.toml
+sed -i "s|\\[PYTHON-VERSION-SHORT\\]|$PYTHON_VERSION_SHORT|g" pyproject.toml
+sed -i "s|\\[APP-NAME\\]|$APP_NAME|g" pyproject.toml
 sed -i "s|\\[YEAR\\]|$YEAR|g" LICENSE.md
-sed -i "s|\\[YOUR NAME OR ORGANIZATION\\]|$AUTHOR|g" LICENSE.md
-sed -i "s|your-project-name|$PROJECT|g" scripts/ralph/init.sh
-sed -i "s|your-project-name|$PROJECT|g" docs/ralph/templates/progress.txt.template
-sed -i "s|your-project-name|$PROJECT|g" docs/ralph/templates/prd.json.template
-sed -i "s|\\[PROJECT NAME\\]|$PROJECT|g" mkdocs.yaml
-sed -i "s|\\[PROJECT DESCRIPTION\\]|$DESCRIPTION|g" mkdocs.yaml
-sed -i "s|\\[GITHUB REPO\\]|$GITHUB_REPO|g" mkdocs.yaml
+sed -i "s|\\[YOUR-NAME-OR-ORGANIZATION\\]|$AUTHOR|g" LICENSE.md
+sed -i "s|\\[PROJECT-NAME\\]|$PROJECT|g" scripts/ralph/init.sh
+sed -i "s|\\[PROJECT-NAME\\]|$PROJECT|g" docs/ralph/templates/progress.txt.template
+sed -i "s|\\[PROJECT-NAME\\]|$PROJECT|g" docs/ralph/templates/prd.json.template
+sed -i "s|\\[PROJECT-NAME\\]|$PROJECT|g" mkdocs.yaml
+sed -i "s|\\[PROJECT-DESCRIPTION\\]|$DESCRIPTION|g" mkdocs.yaml
+sed -i "s|\\[GITHUB-REPO\\]|$GITHUB_REPO|g" mkdocs.yaml
 sed -i "s|devcontainers\/python|devcontainers\/python:$PYTHON_VERSION|g" .devcontainer/project/devcontainer.json
 
 # Rename source directory
@@ -169,11 +169,11 @@ if [ -d "src/your_project_name" ]; then
 fi
 
 # Verify replacements
-REMAINING=$(grep -r "YOUR-ORG\|\[PROJECT NAME\]\|\[YEAR\]\|\[YOUR NAME\|\[PROJECT DESCRIPTION\]\|\[GITHUB REPO\]\|\[PYTHON VERSION" . --exclude-dir=.git --exclude="TEMPLATE_USAGE.md" --exclude="Makefile" 2>/dev/null | wc -l)
+REMAINING=$(grep -r "\[PROJECT-NAME\]\|\[APP-NAME\]\|\[GITHUB-REPO\]\|\[YEAR\]\|\[YOUR-NAME-OR-ORGANIZATION\]\|\[PROJECT-DESCRIPTION\]\|\[PYTHON-VERSION\]\|\[PYTHON-VERSION-SHORT\]" . --exclude-dir=.git --exclude="TEMPLATE_USAGE.md" --exclude="Makefile" --exclude="setup_project.sh" 2>/dev/null | wc -l)
 if [ $REMAINING -gt 0 ]; then
 	echo ""
 	echo "WARNING: Some placeholders may remain. Review with:"
-	echo "  grep -r 'YOUR-ORG\|your-project-name' . --exclude-dir=.git"
+	echo "  grep -r '\[PROJECT-NAME\]\|\[APP-NAME\]\|\[GITHUB-REPO\]\|\[YEAR\]\|\[YOUR-NAME-OR-ORGANIZATION\]\|\[PROJECT-DESCRIPTION\]\|\[PYTHON-VERSION\]' . --exclude-dir=.git --exclude='setup_project.sh'"
 fi
 
 echo ""
