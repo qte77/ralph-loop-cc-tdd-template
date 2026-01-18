@@ -35,6 +35,10 @@ make setup_project
 # 2. Setup development environment, if not done by devcontainer.json
 make setup_dev
 
+# Optional
+make ralph_userstory            # Interactive User Story using CC
+make ralph_prd                  # Generate PRD.md from UserStory.md 
+
 # 3. Write requirements in docs/PRD.md, then run Ralph
 make ralph_init                 # Initialize (creates prd.json)
 make ralph_run [ITERATIONS=25]  # Run autonomous development
@@ -55,8 +59,11 @@ For detailed setup and usage, see [docs/TEMPLATE_USAGE.md](docs/TEMPLATE_USAGE.m
 Document Flow:
   UserStory.md (Why) → PRD.md (What) → prd.json → Implementation → progress.txt
 
-Human Workflow:
-  README.md → Write UserStory.md → Write PRD.md → Run Makefile commands
+Human Workflow (Manual):
+  Write PRD.md → make ralph_init → make ralph_run
+
+Human Workflow (Assisted - Optional):
+  make ralph_userstory → make ralph_prd → make ralph_init → make ralph_run
 
 Agent Workflow:
   PRD.md → prd.json (generating-prd skill) → Ralph Loop → src/ + tests/

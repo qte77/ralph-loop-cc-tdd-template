@@ -5,7 +5,7 @@
 
 .SILENT:
 .ONESHELL:
-.PHONY: setup_dev setup_claude_code setup_markdownlint setup_project run_markdownlint ruff test_all type_check validate quick_validate ralph_init ralph_run ralph_status ralph_clean ralph_reorganize help
+.PHONY: setup_dev setup_claude_code setup_markdownlint setup_project run_markdownlint ruff test_all type_check validate quick_validate ralph_userstory ralph_prd ralph_full_init ralph_init ralph_run ralph_status ralph_clean ralph_reorganize help
 .DEFAULT_GOAL := help
 
 
@@ -74,6 +74,14 @@ quick_validate:  ## Fast development cycle validation
 
 # MARK: ralph
 
+
+ralph_userstory:  ## [Optional] Create UserStory.md interactively. Usage: make ralph_userstory
+	echo "Creating UserStory.md through interactive Q&A ..."
+	claude /building-userstory
+
+ralph_prd:  ## [Optional] Generate PRD.md from UserStory.md
+	echo "Generating PRD.md from UserStory.md ..."
+	claude /generating-prd-from-userstory
 
 ralph_init:  ## Initialize Ralph loop environment
 	echo "Initializing Ralph loop environment ..."
