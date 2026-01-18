@@ -30,7 +30,7 @@ setup_markdownlint:  ## Setup markdownlint CLI, node.js and npm have to be prese
 	npm install -gs markdownlint-cli
 	echo "markdownlint version: $$(markdownlint --version)"
 
-setup_project:  ## Customize template with your project details
+setup_project:  ## Customize template with your project details. Run with help: bash scripts/setup_project.sh help
 	bash scripts/setup_project.sh || { echo ""; echo "ERROR: Project setup failed. Please check the error messages above."; exit 1; }
 
 

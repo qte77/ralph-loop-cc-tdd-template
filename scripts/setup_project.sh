@@ -3,9 +3,53 @@
 
 set -e
 
+# Display usage information
+show_help() {
+	cat <<EOF
+Setup script to customize template with project details
+
+Usage:
+  bash scripts/setup_project.sh                    # Interactive mode
+  make setup_project                               # Via Makefile
+  bash scripts/setup_project.sh help              # Show this help
+
+Interactive Prompts (with auto-detection where possible):
+  1. GitHub org/repo      - Auto-detected from git remote
+  2. Project name         - Derived from repo or prompted (kebab-case)
+  3. App name             - Python package name (defaults to project name in snake_case)
+  4. Description          - Project description
+  5. Author/Organization  - Auto-detected from org or prompted
+  6. Python version       - Auto-detected from 'python --version' (default: 3.13)
+
+Environment Variables (optional - skip interactive prompts):
+  GITHUB_REPO     - GitHub repository (org/repo format)
+  PROJECT         - Project name (kebab-case)
+  DESCRIPTION     - Project description
+  AUTHOR          - Author/Organization name
+  PYTHON_VERSION  - Python version (e.g., 3.13)
+
+  Note: App name is always prompted interactively
+
+Examples:
+  # Interactive mode (recommended)
+  make setup_project
+
+  # Pre-set some values, prompt for others
+  PROJECT=my-project DESCRIPTION="My app" make setup_project
+EOF
+	exit 0
+}
+
+# Check for help flag
+if [[ "$1" == "help" ]] || [[ "$1" == "h" ]] || [[ "$1" == "?" ]] || [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]]; then
+	show_help
+fi
+
+echo ""
 echo "Project Setup"
 echo "============="
 echo "(Leave inputs empty to use found, default or empty values)"
+echo ""
 
 # Check if already customized
 if [ ! -d "src/your_project_name" ] && [ -z "$GITHUB_REPO" ]; then
@@ -44,6 +88,13 @@ else
 	PROJECT="$PROJECT"
 fi
 
+# Derive default app name from PROJECT
+PROJECT_SNAKE=$(echo "$PROJECT" | tr '-' '_')
+
+# Get APP_NAME (prompt with PROJECT_SNAKE as default)
+read -p "App name (Python package name, default '$PROJECT_SNAKE'): " APP_NAME
+APP_NAME=${APP_NAME:-$PROJECT_SNAKE}
+
 # Get DESCRIPTION (prompt if empty)
 if [ -z "$DESCRIPTION" ]; then
 	read -p "Project description: " DESCRIPTION
@@ -76,8 +127,7 @@ else
 	PYTHON_VERSION=${INPUT_PY:-$PYTHON_VERSION}
 fi
 
-# Derive snake_case, year, and Python version short
-PROJECT_SNAKE=$(echo "$PROJECT" | tr '-' '_')
+# Derive year and Python version short
 YEAR=$(date +%Y)
 PYTHON_VERSION_SHORT=$(echo "$PYTHON_VERSION" | tr -d '.')
 
@@ -85,7 +135,8 @@ PYTHON_VERSION_SHORT=$(echo "$PYTHON_VERSION" | tr -d '.')
 echo ""
 echo "Applying:"
 echo "  GitHub repo: $GITHUB_REPO"
-echo "  Project: $PROJECT ($PROJECT_SNAKE)"
+echo "  Project: $PROJECT"
+echo "  App name: $APP_NAME"
 echo "  Description: $DESCRIPTION"
 echo "  Author: $AUTHOR"
 echo "  Year: $YEAR"
@@ -101,7 +152,7 @@ sed -i "s|\\[PROJECT NAME\\]|$PROJECT|g" pyproject.toml
 sed -i "s|\\[PROJECT DESCRIPTION\\]|$DESCRIPTION|g" pyproject.toml
 sed -i "s|\\[PYTHON VERSION\\]|$PYTHON_VERSION|g" pyproject.toml
 sed -i "s|\\[PYTHON VERSION SHORT\\]|$PYTHON_VERSION_SHORT|g" pyproject.toml
-sed -i "s|your_project_name|$PROJECT_SNAKE|g" pyproject.toml
+sed -i "s|your_project_name|$APP_NAME|g" pyproject.toml
 sed -i "s|\\[YEAR\\]|$YEAR|g" LICENSE.md
 sed -i "s|\\[YOUR NAME OR ORGANIZATION\\]|$AUTHOR|g" LICENSE.md
 sed -i "s|your-project-name|$PROJECT|g" scripts/ralph/init.sh
@@ -114,7 +165,7 @@ sed -i "s|devcontainers\/python|devcontainers\/python:$PYTHON_VERSION|g" .devcon
 
 # Rename source directory
 if [ -d "src/your_project_name" ]; then
-	mv src/your_project_name "src/$PROJECT_SNAKE"
+	mv src/your_project_name "src/$APP_NAME"
 fi
 
 # Verify replacements
