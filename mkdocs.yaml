@@ -1,9 +1,9 @@
 # https://github.com/james-willett/mkdocs-material-youtube-tutorial
 # https://mkdocstrings.github.io/recipes/
 # site info set in workflow
-site_name: '[PROJECT NAME]'
-site_description: '[PROJECT DESCRIPTION]'
-repo_url: 'https://github.com/[GITHUB REPO]'
+site_name: '[PROJECT-NAME]'
+site_description: '[PROJECT-DESCRIPTION]'
+repo_url: 'https://github.com/[GITHUB-REPO]'
 edit_uri: edit/main
 theme:
   name: material

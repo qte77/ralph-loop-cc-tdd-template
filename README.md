@@ -6,13 +6,13 @@ Out-of-the-box Python project template using Ralph Loop autonomous development w
 
 ![Version](https://img.shields.io/badge/version-0.0.0-58f4c2.svg)
 [![License](https://img.shields.io/badge/license-BSD3Clause-58f4c2.svg)](LICENSE.md)
-[![CodeQL](https://github.com/YOUR-ORG/YOUR-PROJECT-NAME/actions/workflows/codeql.yaml/badge.svg)](https://github.com/YOUR-ORG/YOUR-PROJECT-NAME/actions/workflows/codeql.yaml)
-[![CodeFactor](https://www.codefactor.io/repository/github/YOUR-ORG/YOUR-PROJECT-NAME/badge)](https://www.codefactor.io/repository/github/YOUR-ORG/YOUR-PROJECT-NAME)
-[![ruff](https://github.com/YOUR-ORG/YOUR-PROJECT-NAME/actions/workflows/ruff.yaml/badge.svg)](https://github.com/YOUR-ORG/YOUR-PROJECT-NAME/actions/workflows/ruff.yaml)
-[![pyright](https://github.com/YOUR-ORG/YOUR-PROJECT-NAME/actions/workflows/pyright.yaml/badge.svg)](https://github.com/YOUR-ORG/YOUR-PROJECT-NAME/actions/workflows/pyright.yaml)
-[![pytest](https://github.com/YOUR-ORG/YOUR-PROJECT-NAME/actions/workflows/pytest.yaml/badge.svg)](https://github.com/YOUR-ORG/YOUR-PROJECT-NAME/actions/workflows/pytest.yaml)
-[![Link Checker](https://github.com/YOUR-ORG/YOUR-PROJECT-NAME/actions/workflows/links-fail-fast.yaml/badge.svg)](https://github.com/YOUR-ORG/YOUR-PROJECT-NAME/actions/workflows/links-fail-fast.yaml)
-[![Deploy Docs](https://github.com/YOUR-ORG/YOUR-PROJECT-NAME/actions/workflows/generate-deploy-mkdocs-ghpages.yaml/badge.svg)](https://github.com/YOUR-ORG/YOUR-PROJECT-NAME/actions/workflows/generate-deploy-mkdocs-ghpages.yaml)
+[![CodeQL](https://github.com/[GITHUB-REPO]/actions/workflows/codeql.yaml/badge.svg)](https://github.com/[GITHUB-REPO]/actions/workflows/codeql.yaml)
+[![CodeFactor](https://www.codefactor.io/repository/github/[GITHUB-REPO]/badge)](https://www.codefactor.io/repository/github/[GITHUB-REPO])
+[![ruff](https://github.com/[GITHUB-REPO]/actions/workflows/ruff.yaml/badge.svg)](https://github.com/[GITHUB-REPO]/actions/workflows/ruff.yaml)
+[![pyright](https://github.com/[GITHUB-REPO]/actions/workflows/pyright.yaml/badge.svg)](https://github.com/[GITHUB-REPO]/actions/workflows/pyright.yaml)
+[![pytest](https://github.com/[GITHUB-REPO]/actions/workflows/pytest.yaml/badge.svg)](https://github.com/[GITHUB-REPO]/actions/workflows/pytest.yaml)
+[![Link Checker](https://github.com/[GITHUB-REPO]/actions/workflows/links-fail-fast.yaml/badge.svg)](https://github.com/[GITHUB-REPO]/actions/workflows/links-fail-fast.yaml)
+[![Deploy Docs](https://github.com/[GITHUB-REPO]/actions/workflows/generate-deploy-mkdocs-ghpages.yaml/badge.svg)](https://github.com/[GITHUB-REPO]/actions/workflows/generate-deploy-mkdocs-ghpages.yaml)
 
 ## Features
 
