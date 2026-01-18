@@ -11,7 +11,7 @@ See `.devcontainer/README.md`.
 
 ## Setup Steps
 
-### 1. Clone and Customize
+### 1. Setup Development Environment
 
 ```bash
 # Clone this template
@@ -20,23 +20,23 @@ cd <your-repo>
 
 # Customize the template
 make setup_project
+
+# Install dependencies and tooling
+make setup_dev
 ```
 
 ### 2. Write Requirements
 
-Edit **`docs/PRD.md`** with your product requirements.
+**Option A (Manual)**: Edit **`docs/PRD.md`** with your product requirements.
 
-### 3. Setup Development Environment
+**Option B (Assisted)**: Use interactive workflow:
 
 ```bash
-# Install dependencies and tooling
-make setup_dev
-
-# Verify setup
-make validate
+make ralph_userstory  # Create UserStory.md via Q&A
+make ralph_prd        # Generate PRD.md from UserStory.md
 ```
 
-### 4. Run Ralph Loop
+### 3. Run Ralph Loop
 
 ```bash
 make ralph_init              # Initialize (creates prd.json)
@@ -81,15 +81,22 @@ your-project/
 ## Common Commands
 
 ```bash
-make setup_project    # Customize template
-make setup_dev        # Setup environment
-make validate         # Run all checks
-make ralph_init       # Initialize Ralph
-make ralph_run        # Run autonomous dev
-make ralph_status     # Check progress
-make ralph_clean      # Reset state (removes prd.json, progress.txt)
-make ralph_reorganize # Archive and start new iteration
-make help             # Show all commands
+make setup_project     # Customize template
+make setup_dev         # Setup environment
+make validate          # Run all checks
+
+# Ralph (Optional assisted workflow)
+make ralph_userstory   # [Optional] Create UserStory.md interactively
+make ralph_prd         # [Optional] Generate PRD.md from UserStory.md
+
+# Ralph (Core workflow)
+make ralph_init        # Initialize Ralph (creates prd.json)
+make ralph_run         # Run autonomous dev
+make ralph_status      # Check progress
+make ralph_clean       # Reset state (removes prd.json, progress.txt)
+make ralph_reorganize  # Archive and start new iteration
+
+make help              # Show all commands
 ```
 
 ## Next Steps
@@ -98,4 +105,4 @@ make help             # Show all commands
 2. Write requirements in `docs/PRD.md`
 3. Run `make ralph_run` for autonomous implementation
 
-See `docs/RalphUsage.md` for Ralph details, `.claude/skills/` for available skills.
+See `.claude/skills/` for available skills and `make help` for all commands.

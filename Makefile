@@ -5,7 +5,7 @@
 
 .SILENT:
 .ONESHELL:
-.PHONY: setup_dev setup_claude_code setup_markdownlint setup_project run_markdownlint ruff test_all type_check validate quick_validate ralph_init ralph_run ralph_status ralph_clean ralph_reorganize help
+.PHONY: setup_dev setup_claude_code setup_markdownlint setup_project run_markdownlint ruff test_all type_check validate quick_validate ralph_userstory ralph_prd ralph_full_init ralph_init ralph_run ralph_status ralph_clean ralph_reorganize help
 .DEFAULT_GOAL := help
 
 
@@ -30,95 +30,8 @@ setup_markdownlint:  ## Setup markdownlint CLI, node.js and npm have to be prese
 	npm install -gs markdownlint-cli
 	echo "markdownlint version: $$(markdownlint --version)"
 
-setup_project:  ## Customize template with your project details
-	@echo "Project Setup"
-	@echo "============="
-	@# Check if already customized
-	@if [ ! -d "src/your_project_name" ] && [ -z "$(GITHUB_REPO)" ]; then \
-		echo "WARNING: Appears already customized (src/your_project_name/ not found)"; \
-		read -p "Continue anyway? [y/N]: " confirm; \
-		[ "$$confirm" != "y" ] && exit 0; \
-	fi
-	@# Get GITHUB_REPO (prompt if empty)
-	@if [ -z "$(GITHUB_REPO)" ]; then \
-		read -p "GitHub org/repo (e.g., acme/my-app): " GITHUB_REPO; \
-	else \
-		GITHUB_REPO="$(GITHUB_REPO)"; \
-	fi; \
-	# Derive PROJECT from GITHUB_REPO if not provided
-	if [ -z "$(PROJECT)" ]; then \
-		PROJECT=$${PROJECT:-$$(echo "$$GITHUB_REPO" | cut -d'/' -f2)}; \
-		if [ -z "$$PROJECT" ]; then \
-			read -p "Project name (kebab-case, e.g., my-app): " PROJECT; \
-		fi; \
-	else \
-		PROJECT="$(PROJECT)"; \
-	fi; \
-	# Get DESCRIPTION (prompt if empty)
-	if [ -z "$(DESCRIPTION)" ]; then \
-		read -p "Project description: " DESCRIPTION; \
-	else \
-		DESCRIPTION="$(DESCRIPTION)"; \
-	fi; \
-	# Get AUTHOR (prompt if empty)
-	if [ -z "$(AUTHOR)" ]; then \
-		read -p "Author/Organization name: " AUTHOR; \
-	else \
-		AUTHOR="$(AUTHOR)"; \
-	fi; \
-	# Get Python version (prompt if empty)
-	if [ -z "$(PYTHON_VERSION)" ]; then \
-		read -p "Python version (e.g., 3.13) [default: 3.13]: " PYTHON_VERSION; \
-		PYTHON_VERSION=$${PYTHON_VERSION:-3.13}; \
-	else \
-		PYTHON_VERSION="$(PYTHON_VERSION)"; \
-	fi; \
-	# Derive snake_case, year, and Python version short
-	PROJECT_SNAKE=$$(echo "$$PROJECT" | tr '-' '_'); \
-	YEAR=$$(date +%Y); \
-	PYTHON_VERSION_SHORT=$$(echo "$$PYTHON_VERSION" | tr -d '.'); \
-	# Show summary
-	echo ""; \
-	echo "Applying:"; \
-	echo "  GitHub repo: $$GITHUB_REPO"; \
-	echo "  Project: $$PROJECT ($$PROJECT_SNAKE)"; \
-	echo "  Description: $$DESCRIPTION"; \
-	echo "  Author: $$AUTHOR"; \
-	echo "  Year: $$YEAR"; \
-	echo "  Python version: $$PYTHON_VERSION (py$$PYTHON_VERSION_SHORT)"; \
-	echo ""; \
-	# Perform replacements
-	sed -i "s|YOUR-ORG/YOUR-PROJECT-NAME|$$GITHUB_REPO|g" README.md; \
-	sed -i "s|Python Ralph-Loop Template|$$PROJECT|g" README.md; \
-	sed -i "s|> What at time to be alive|$$DESCRIPTION|g" README.md; \
-	sed -i "/Out-of-the-box Python project template using Ralph Loop/d" README.md; \
-	sed -i "s|\\[PROJECT NAME\\]|$$PROJECT|g" pyproject.toml; \
-	sed -i "s|\\[PROJECT DESCRIPTION\\]|$$DESCRIPTION|g" pyproject.toml; \
-	sed -i "s|\\[PYTHON VERSION\\]|$$PYTHON_VERSION|g" pyproject.toml; \
-	sed -i "s|\\[PYTHON VERSION SHORT\\]|$$PYTHON_VERSION_SHORT|g" pyproject.toml; \
-	sed -i "s|your_project_name|$$PROJECT_SNAKE|g" pyproject.toml; \
-	sed -i "s|\[YEAR\]|$$YEAR|g" LICENSE.md; \
-	sed -i "s|\[YOUR NAME OR ORGANIZATION\]|$$AUTHOR|g" LICENSE.md; \
-	sed -i "s|your-project-name|$$PROJECT|g" scripts/ralph/init.sh; \
-	sed -i "s|your-project-name|$$PROJECT|g" docs/ralph/templates/progress.txt.template; \
-	sed -i "s|your-project-name|$$PROJECT|g" docs/ralph/templates/prd.json.template; \
-	sed -i "s|\\[PROJECT NAME\\]|$$PROJECT|g" mkdocs.yaml; \
-	sed -i "s|\\[PROJECT DESCRIPTION\\]|$$DESCRIPTION|g" mkdocs.yaml; \
-	sed -i "s|\\[GITHUB REPO\\]|$$GITHUB_REPO|g" mkdocs.yaml; \
-	sed -i "s|\\[PYTHON VERSION\\]|$$PYTHON_VERSION|g" .devcontainer/project/devcontainer.json; \
-	# Rename source directory
-	if [ -d "src/your_project_name" ]; then \
-		mv src/your_project_name "src/$$PROJECT_SNAKE"; \
-	fi; \
-	# Verify replacements
-	REMAINING=$$(grep -r "YOUR-ORG\|\[PROJECT NAME\]\|\[YEAR\]\|\[YOUR NAME\|\[PROJECT DESCRIPTION\]\|\[GITHUB REPO\]\|\[PYTHON VERSION" . --exclude-dir=.git --exclude="TEMPLATE_USAGE.md" 2>/dev/null | wc -l); \
-	if [ $$REMAINING -gt 0 ]; then \
-		echo ""; \
-		echo "WARNING: Some placeholders may remain. Review with:"; \
-		echo "  grep -r 'YOUR-ORG\|your-project-name' . --exclude-dir=.git"; \
-	fi; \
-	echo ""; \
-	echo "Project setup complete!"
+setup_project:  ## Customize template with your project details. Run with help: bash scripts/setup_project.sh help
+	bash scripts/setup_project.sh || { echo ""; echo "ERROR: Project setup failed. Please check the error messages above."; exit 1; }
 
 
 # MARK: run markdownlint
@@ -162,6 +75,14 @@ quick_validate:  ## Fast development cycle validation
 # MARK: ralph
 
 
+ralph_userstory:  ## [Optional] Create UserStory.md interactively. Usage: make ralph_userstory
+	echo "Creating UserStory.md through interactive Q&A ..."
+	claude /building-userstory
+
+ralph_prd:  ## [Optional] Generate PRD.md from UserStory.md
+	echo "Generating PRD.md from UserStory.md ..."
+	claude /generating-prd-from-userstory
+
 ralph_init:  ## Initialize Ralph loop environment
 	echo "Initializing Ralph loop environment ..."
 	bash scripts/ralph/init.sh
@@ -174,15 +95,15 @@ ralph_run:  ## Run Ralph autonomous development loop (use ITERATIONS=N to set ma
 ralph_status:  ## Show Ralph loop progress and status
 	echo "Ralph Loop Status"
 	echo "================="
-	if [ -f docs/ralph/prd.json ]; then \
-		total=$$(jq '.stories | length' docs/ralph/prd.json); \
-		passing=$$(jq '[.stories[] | select(.passes == true)] | length' docs/ralph/prd.json); \
-		echo "Stories: $$passing/$$total completed"; \
-		echo ""; \
-		echo "Incomplete stories:"; \
-		jq -r '.stories[] | select(.passes == false) | "  - [\(.id)] \(.title)"' docs/ralph/prd.json; \
-	else \
-		echo "prd.json not found. Run 'make ralph_init' first."; \
+	if [ -f docs/ralph/prd.json ]; then
+		total=$$(jq '.stories | length' docs/ralph/prd.json)
+		passing=$$(jq '[.stories[] | select(.passes == true)] | length' docs/ralph/prd.json)
+		echo "Stories: $$passing/$$total completed"
+		echo ""
+		echo "Incomplete stories:"
+		jq -r '.stories[] | select(.passes == false) | "  - [\(.id)] \(.title)"' docs/ralph/prd.json
+	else
+		echo "prd.json not found. Run 'make ralph_init' first."
 	fi
 
 ralph_clean:  ## Reset Ralph state (WARNING: removes prd.json and progress.txt)
@@ -193,15 +114,15 @@ ralph_clean:  ## Reset Ralph state (WARNING: removes prd.json and progress.txt)
 	echo "Ralph state cleaned. Run 'make ralph_init' to reinitialize."
 
 ralph_reorganize:  ## Archive current PRD and start new iteration. Usage: make ralph_reorganize NEW_PRD=path/to/new.md [VERSION=2]
-	@if [ -z "$(NEW_PRD)" ]; then \
-		echo "Error: NEW_PRD parameter required"; \
-		echo "Usage: make ralph_reorganize NEW_PRD=docs/PRD-New.md [VERSION=2]"; \
-		exit 1; \
+	@if [ -z "$(NEW_PRD)" ]; then
+		echo "Error: NEW_PRD parameter required"
+		echo "Usage: make ralph_reorganize NEW_PRD=docs/PRD-New.md [VERSION=2]"
+		exit 1
 	fi
-	@VERSION_ARG=""; \
-	if [ -n "$(VERSION)" ]; then \
-		VERSION_ARG="-v $(VERSION)"; \
-	fi; \
+	@VERSION_ARG=""
+	if [ -n "$(VERSION)" ]; then
+		VERSION_ARG="-v $(VERSION)"
+	fi
 	bash scripts/ralph/reorganize_prd.sh $$VERSION_ARG $(NEW_PRD)
 
 

@@ -1,8 +1,8 @@
 {
   "project": "your-project-name",
+  "desciption": "A concise project desctipion",
   "source": "docs/PRD.md",
   "generated": "TEMPLATE",
-  "description": "Task tracking for Ralph loop autonomous execution",
   "stories": [
     {
       "id": "STORY-EXAMPLE",

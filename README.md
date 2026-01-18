@@ -2,7 +2,7 @@
 
 > What a time to be alive
 
-Out-of-the-box Python project template using Ralph Loop autonomous development with Claude Code.
+Out-of-the-box Python project template using Ralph Loop autonomous development with Claude Code (plugins, skills, rules), TDD, uv, ruff, pyright, pytest.
 
 ![Version](https://img.shields.io/badge/version-0.0.0-58f4c2.svg)
 [![License](https://img.shields.io/badge/license-BSD3Clause-58f4c2.svg)](LICENSE.md)
@@ -29,10 +29,15 @@ Out-of-the-box Python project template using Ralph Loop autonomous development w
 
 ```bash
 # 1. Customize template with your project details
+# The devcontainer needs a rebuild, if the python version was changed
 make setup_project
 
 # 2. Setup development environment, if not done by devcontainer.json
 make setup_dev
+
+# Optional
+make ralph_userstory            # Interactive User Story using CC
+make ralph_prd                  # Generate PRD.md from UserStory.md 
 
 # 3. Write requirements in docs/PRD.md, then run Ralph
 make ralph_init                 # Initialize (creates prd.json)
@@ -52,10 +57,13 @@ For detailed setup and usage, see [docs/TEMPLATE_USAGE.md](docs/TEMPLATE_USAGE.m
 
 ```text
 Document Flow:
-  UserStory.md → PRD.md → prd.json → Implementation → progress.txt
+  UserStory.md (Why) → PRD.md (What) → prd.json → Implementation → progress.txt
 
-Human Workflow:
-  README.md → Write UserStory.md (Why) → Write PRD.md (What) → Run Makefile commands
+Human Workflow (Manual):
+  Write PRD.md → make ralph_init → make ralph_run
+
+Human Workflow (Assisted - Optional):
+  make ralph_userstory → make ralph_prd → make ralph_init → make ralph_run
 
 Agent Workflow:
   PRD.md → prd.json (generating-prd skill) → Ralph Loop → src/ + tests/
