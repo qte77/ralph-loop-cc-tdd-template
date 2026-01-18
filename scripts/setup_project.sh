@@ -147,7 +147,7 @@ echo ""
 sed -i "s|\\[GITHUB-REPO\\]|$GITHUB_REPO|g" README.md
 sed -i "s|Python Ralph-Loop Template|$PROJECT|g" README.md
 sed -i "s|> What a time to be alive|$DESCRIPTION|g" README.md
-sed -i "/Out-of-the-box Python project template using Ralph Loop autonomous development/{N;d;}" README.md
+sed -i "/Out-of-the-box Python project template using Ralph Loop autonomous development with Claude Code (plugins, skills, rules), TDD, uv, ruff, pyright, pytest. Also including interactive User Story and PRD generation./{N;d;}" README.md
 sed -i "s|\\[PROJECT-NAME\\]|$PROJECT|g" pyproject.toml
 sed -i "s|\\[PROJECT-DESCRIPTION\\]|$DESCRIPTION|g" pyproject.toml
 sed -i "s|\\[PYTHON-VERSION\\]|$PYTHON_VERSION|g" pyproject.toml
