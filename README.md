@@ -55,6 +55,27 @@ make ralph_reorganize NEW_PRD=docs/PRD-v2.md [VERSION=2]
 
 For detailed setup and usage, see [docs/TEMPLATE_USAGE.md](docs/TEMPLATE_USAGE.md).
 
+## ⚠️ Security Disclaimer
+
+**Ralph Loop runs with `--dangerously-skip-permissions`** which bypasses all Claude Code permission restrictions (including those in `.claude/settings.json`). This enables fully autonomous operation but means:
+
+- All bash commands execute without approval
+- File operations (read/write/delete) happen automatically
+- Git operations (commit/push) run without confirmation
+- Network requests might be unrestricted
+
+**Only use Ralph Loop in**:
+- Isolated development environments (DevContainers, VMs)
+- Repositories you control and can restore
+- Projects with proper version control and backups
+
+**Never run Ralph Loop**:
+- In production environments
+- On repositories with sensitive data
+- On your main development machine without isolation
+
+See `scripts/ralph/ralph.sh:135` for implementation details.
+
 ## Workflow
 
 ```text
