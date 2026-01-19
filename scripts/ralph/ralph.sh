@@ -21,6 +21,12 @@
 
 set -euo pipefail
 
+# Get script directory
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Source libraries
+source "$SCRIPT_DIR/lib/generate_app_docs.sh"
+
 # Configuration
 MAX_ITERATIONS=${1:-10}
 PRD_JSON="docs/ralph/prd.json"
@@ -260,6 +266,19 @@ main() {
                 update_story_status "$story_id" "true"
                 log_progress "$iteration" "$story_id" "PASS" "Completed successfully with TDD commits"
                 log_info "Story $story_id marked as PASSING"
+
+                # Generate/update application documentation
+                local app_readme=$(generate_app_readme)
+                local app_example=$(generate_app_example)
+
+                # Commit state files (prd.json, progress.txt, README.md, example.py)
+                log_info "Committing state files..."
+                git add "$PRD_JSON" "$PROGRESS_FILE"
+                [ -n "$app_readme" ] && git add "$app_readme"
+                [ -n "$app_example" ] && git add "$app_example"
+                git commit -m "chore: Update Ralph state after completing $story_id
+
+Co-Authored-By: Claude <noreply@anthropic.com>" || log_warn "No state changes to commit"
             else
                 log_warn "Story completed but quality checks failed"
                 log_progress "$iteration" "$story_id" "FAIL" "Quality checks failed"
