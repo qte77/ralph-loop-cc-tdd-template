@@ -2,7 +2,7 @@
 
 > What a time to be alive
 
-Out-of-the-box Python project template using Ralph Loop autonomous development with Claude Code (plugins, skills, rules), TDD, uv, ruff, pyright, pytest.
+Out-of-the-box Python project template using Ralph Loop autonomous development with Claude Code (plugins, skills, rules), TDD, uv, ruff, pyright, pytest. Also including interactive User Story and PRD generation.
 
 ![Version](https://img.shields.io/badge/version-0.0.0-58f4c2.svg)
 [![License](https://img.shields.io/badge/license-BSD3Clause-58f4c2.svg)](LICENSE.md)
@@ -16,9 +16,11 @@ Out-of-the-box Python project template using Ralph Loop autonomous development w
 
 ## Features
 
+- **Interactive User Story** - Generate a UserStory.md in colab with Claude Code
+- **Semi-Interactive PRD** - Let Claude Code generate the PRD.md from scratch or using the UserStory.md and steer if necessary
 - **Ralph Loop** - Autonomous development using a shell loop
 - **Claude Code** - Pre-configured skills, plugins, rules, and commands for AI-assisted development
-- **Makefile** - Build automation, Ralph orchestration, and validation commands
+- **Makefile** - User Story and PRD generation, Ralph orchestration, build automation and validation commands
 - **Python Tooling** - ruff (linting/formatting), pyright (type checking), pytest (testing)
 - **MkDocs** - Auto-generated documentation with GitHub Pages deployment
 - **GitHub Actions** - CI/CD workflows (CodeQL, ruff, pyright, pytest, link checking, docs deployment)
@@ -32,10 +34,10 @@ Out-of-the-box Python project template using Ralph Loop autonomous development w
 # The devcontainer needs a rebuild, if the python version was changed
 make setup_project
 
-# 2. Setup development environment, if not done by devcontainer.json
+# 2.1 [If necessary] Setup development environment, if not done by devcontainer.json
 make setup_dev
 
-# Optional
+# 2.2 [Optional]
 make ralph_userstory            # Interactive User Story using CC
 make ralph_prd                  # Generate PRD.md from UserStory.md 
 
@@ -53,6 +55,27 @@ make ralph_reorganize NEW_PRD=docs/PRD-v2.md [VERSION=2]
 
 For detailed setup and usage, see [docs/TEMPLATE_USAGE.md](docs/TEMPLATE_USAGE.md).
 
+## ⚠️ Security Disclaimer
+
+**Ralph Loop runs with `--dangerously-skip-permissions`** which bypasses all Claude Code permission restrictions (including those in `.claude/settings.json`). This enables fully autonomous operation but means:
+
+- All bash commands execute without approval
+- File operations (read/write/delete) happen automatically
+- Git operations (commit/push) run without confirmation
+- Network requests might be unrestricted
+
+**Only use Ralph Loop in**:
+- Isolated development environments (DevContainers, VMs)
+- Repositories you control and can restore
+- Projects with proper version control and backups
+
+**Never run Ralph Loop**:
+- In production environments
+- On repositories with sensitive data
+- On your main development machine without isolation
+
+See `scripts/ralph/ralph.sh:135` for implementation details.
+
 ## Workflow
 
 ```text
@@ -60,10 +83,10 @@ Document Flow:
   UserStory.md (Why) → PRD.md (What) → prd.json → Implementation → progress.txt
 
 Human Workflow (Manual):
-  Write PRD.md → make ralph_init → make ralph_run
+  [Write UserStory.md →] Write PRD.md → make ralph_init → make ralph_run
 
 Human Workflow (Assisted - Optional):
-  make ralph_userstory → make ralph_prd → make ralph_init → make ralph_run
+  [make ralph_userstory → make ralph_prd →] make ralph_init → make ralph_run
 
 Agent Workflow:
   PRD.md → prd.json (generating-prd skill) → Ralph Loop → src/ + tests/
