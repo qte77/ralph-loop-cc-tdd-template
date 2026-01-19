@@ -1,6 +1,6 @@
 {
   "project": "[PROJECT-NAME]",
-  "desciption": "A concise project desctipion",
+  "desciption": "A concise project descripion",
   "source": "docs/PRD.md",
   "generated": "TEMPLATE",
   "stories": [
