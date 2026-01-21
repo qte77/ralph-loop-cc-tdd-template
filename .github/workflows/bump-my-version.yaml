@@ -93,9 +93,13 @@ jobs:
         run: echo "summary_data=${GITHUB_STEP_SUMMARY}" >> $GITHUB_OUTPUT
   
   generate_summary:
-    name: Generate Summary Report 
+    name: Generate Summary Report
     if: ${{ always() }}
     needs: bump_my_version
+    permissions:
+      contents: read
+      actions: read
+      checks: read
     uses: ./.github/workflows/summarize-jobs-reusable.yaml
     with:
       branch_to_summarize: ${{ needs.bump_my_version.outputs.branch_new }}
