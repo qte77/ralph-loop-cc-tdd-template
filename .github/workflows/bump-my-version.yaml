@@ -20,7 +20,6 @@ on:
 env:
   BRANCH_NEW: "bump-${{ github.run_number }}-${{ github.ref_name }}"
   SKIP_PR_HINT: "[skip ci bump]"
-  SCRIPT_PATH: ".github/scripts"
 
 jobs:
   bump_my_version:
@@ -41,8 +40,6 @@ jobs:
       branch_new: ${{ steps.create_branch.outputs.branch_new }}
       summary_data: ${{ steps.set_summary.outputs.summary_data }}
     permissions:
-      actions: read
-      checks: write
       contents: write
       pull-requests: write
     steps:
@@ -73,19 +70,29 @@ jobs:
         if: steps.bump.outputs.bumped == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH_NEW: ${{ env.BRANCH_NEW }}
+          SKIP_PR_HINT: ${{ env.SKIP_PR_HINT }}
+          PREV_VERSION: ${{ steps.bump.outputs.previous-version }}
+          CURR_VERSION: ${{ steps.bump.outputs.current-version }}
+          BASE_REF: ${{ github.ref_name }}
         run: |
-          src="${{ env.SCRIPT_PATH }}/create_pr.sh"
-          chmod +x "$src"
-          $src "${{ github.ref_name }}" "${{ env.BRANCH_NEW }}" "${{ env.SKIP_PR_HINT }}" "${{ steps.bump.outputs.previous-version }}" "${{ steps.bump.outputs.current-version }}"
+          gh pr create \
+            --base "$BASE_REF" \
+            --head "$BRANCH_NEW" \
+            --title "PR $BRANCH_NEW $SKIP_PR_HINT" \
+            --body "PR automatically created from \`$BASE_REF\` to bump from \`$PREV_VERSION\` to \`$CURR_VERSION\` on \`$BRANCH_NEW\`. Tag \`v$CURR_VERSION\` will be created and has to be deleted manually if PR gets closed without merge."
 
       - name: Delete branch, PR and tag in case of failure or cancel
         if: failure() || cancelled()
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH_NEW: ${{ env.BRANCH_NEW }}
+          CURR_VERSION: ${{ steps.bump.outputs.current-version }}
+          REPO: ${{ github.repository }}
         run: |
-          src="${{ env.SCRIPT_PATH }}/delete_branch_pr_tag.sh"
-          chmod +x "$src"
-          $src "${{ github.repository }}" "${{ env.BRANCH_NEW }}" "${{ steps.bump.outputs.current-version }}"
+          git tag -d "v$CURR_VERSION" || true
+          gh pr close "$BRANCH_NEW" --comment "Closing PR '$BRANCH_NEW' to rollback after failure" || true
+          gh api "repos/$REPO/git/refs/heads/$BRANCH_NEW" -X DELETE || true
 
       - name: Set summary data
         id: set_summary
