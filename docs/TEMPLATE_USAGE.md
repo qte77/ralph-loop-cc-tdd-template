@@ -11,6 +11,16 @@ See `.devcontainer/README.md`.
 
 ## Setup Steps
 
+### 0. GitHub Repository Settings (One-time)
+
+**Enable GitHub Actions PR Creation:**
+1. Go to: Repository Settings → Actions → General
+2. Scroll to "Workflow permissions"
+3. Enable: ✅ "Allow GitHub Actions to create and approve pull requests"
+4. Save
+
+This allows the `bump-my-version` workflow to automatically create version bump PRs.
+
 ### 1. Setup Development Environment
 
 ```bash
