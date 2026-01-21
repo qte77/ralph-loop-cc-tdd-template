@@ -52,8 +52,8 @@ echo "(Leave inputs empty to use found, default or empty values)"
 echo ""
 
 # Check if already customized
-if [ ! -d "src/your_project_name" ] && [ -z "$GITHUB_REPO" ]; then
-	echo "WARNING: Appears already customized (src/your_project_name/ not found)"
+if [ ! -d "src/[APP-NAME]" ] && [ -z "$GITHUB_REPO" ]; then
+	echo "WARNING: Appears already customized (src/[APP-NAME]/ not found)"
 	read -p "Continue anyway? [y/N]: " confirm
 	[ "$confirm" != "y" ] && exit 0
 fi
@@ -143,11 +143,20 @@ echo "  Year: $YEAR"
 echo "  Python version: $PYTHON_VERSION (py$PYTHON_VERSION_SHORT)"
 echo ""
 
-# Perform replacements
+# Backup template files to docs/ralph
+mv README.md docs/ralph/README.md
+mv CHANGELOG.md docs/ralph/CHANGELOG.md
+mv pyproject.toml docs/ralph/pyproject.toml
+
+# Create fresh project files from templates
+cp docs/ralph/templates/project/README.template.md README.md
+cp docs/ralph/templates/project/CHANGELOG.template.md CHANGELOG.md
+cp docs/ralph/templates/project/pyproject.template.toml pyproject.toml
+
+# Perform string replacements
 sed -i "s|\\[GITHUB-REPO\\]|$GITHUB_REPO|g" README.md
-sed -i "s|Python Ralph-Loop Template|$PROJECT|g" README.md
-sed -i "s|> What a time to be alive|$DESCRIPTION|g" README.md
-sed -i "/Out-of-the-box Python project template using Ralph Loop autonomous development with Claude Code (plugins, skills, rules), TDD, uv, ruff, pyright, pytest. Also including interactive User Story and PRD generation./{N;d;}" README.md
+sed -i "s|\\[PROJECT-NAME\\]|$PROJECT|g" README.md
+sed -i "s|\\[PROJECT-DESCRIPTION\\]|$DESCRIPTION|g" README.md
 sed -i "s|\\[PROJECT-NAME\\]|$PROJECT|g" pyproject.toml
 sed -i "s|\\[PROJECT-DESCRIPTION\\]|$DESCRIPTION|g" pyproject.toml
 sed -i "s|\\[PYTHON-VERSION\\]|$PYTHON_VERSION|g" pyproject.toml
@@ -162,14 +171,15 @@ sed -i "s|\\[PROJECT-NAME\\]|$PROJECT|g" mkdocs.yaml
 sed -i "s|\\[PROJECT-DESCRIPTION\\]|$DESCRIPTION|g" mkdocs.yaml
 sed -i "s|\\[GITHUB-REPO\\]|$GITHUB_REPO|g" mkdocs.yaml
 sed -i "s|devcontainers\/python|devcontainers\/python:$PYTHON_VERSION|g" .devcontainer/project/devcontainer.json
+sed -i "s|\\[PROJECT-DESCRIPTION\\]|$DESCRIPTION|g" src/[APP-NAME]/__init__.py
 
 # Rename source directory
-if [ -d "src/your_project_name" ]; then
-	mv src/your_project_name "src/$APP_NAME"
+if [ -d "src/[APP-NAME]" ]; then
+	mv "src/[APP-NAME]" "src/$APP_NAME"
 fi
 
-# Verify replacements
-REMAINING=$(grep -r "\[PROJECT-NAME\]\|\[APP-NAME\]\|\[GITHUB-REPO\]\|\[YEAR\]\|\[YOUR-NAME-OR-ORGANIZATION\]\|\[PROJECT-DESCRIPTION\]\|\[PYTHON-VERSION\]\|\[PYTHON-VERSION-SHORT\]" . --exclude-dir=.git --exclude="TEMPLATE_USAGE.md" --exclude="Makefile" --exclude="setup_project.sh" 2>/dev/null | wc -l)
+# Verify string replacements
+REMAINING=$(grep -r "\[PROJECT-NAME\]\|\[APP-NAME\]\|\[GITHUB-REPO\]\|\[YEAR\]\|\[YOUR-NAME-OR-ORGANIZATION\]\|\[PROJECT-DESCRIPTION\]\|\[PYTHON-VERSION\]\|\[PYTHON-VERSION-SHORT\]" . --exclude-dir=.git --exclude-dir=docs/ralph --exclude="TEMPLATE_USAGE.md" --exclude="Makefile" --exclude="setup_project.sh" 2>/dev/null | wc -l)
 if [ $REMAINING -gt 0 ]; then
 	echo ""
 	echo "WARNING: Some placeholders may remain. Review with:"
