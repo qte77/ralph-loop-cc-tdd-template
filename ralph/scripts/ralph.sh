@@ -29,9 +29,9 @@ source "$SCRIPT_DIR/lib/generate_app_docs.sh"
 
 # Configuration
 MAX_ITERATIONS=${1:-10}
-PRD_JSON="docs/ralph/prd.json"
-PROGRESS_FILE="docs/ralph/progress.txt"
-PROMPT_FILE="docs/ralph/templates/prompt.md"
+PRD_JSON="ralph/state/prd.json"
+PROGRESS_FILE="ralph/state/progress.txt"
+PROMPT_FILE="ralph/templates/prompt.md"
 BRANCH_PREFIX="ralph/story-"
 MAX_RETRIES=3
 

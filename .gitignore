@@ -44,3 +44,7 @@ site/
 
 # type checking
 .mypy_cache/
+
+# Ralph Loop state (runtime generated)
+ralph/state/*
+!ralph/state/.gitkeep

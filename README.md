@@ -74,7 +74,7 @@ For detailed setup and usage, see [docs/TEMPLATE_USAGE.md](docs/TEMPLATE_USAGE.m
 - On repositories with sensitive data
 - On your main development machine without isolation
 
-See `scripts/ralph/ralph.sh:135` for implementation details.
+See `ralph/scripts/ralph.sh:135` for implementation details.
 
 ## Workflow
 

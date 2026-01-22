@@ -53,38 +53,38 @@ fi
 
 # Auto-detect version if not provided
 if [ -z "$VERSION" ]; then
-    # Count existing PRD archives
-    COUNT=$(find docs/archive -maxdepth 1 -name "PRD-v*.md" 2>/dev/null | wc -l)
+    # Count existing archives
+    COUNT=$(find ralph/archive -maxdepth 1 -type d -name "v*" 2>/dev/null | wc -l)
     VERSION=$((COUNT + 1))
     echo "Auto-detected version: v$VERSION"
 fi
 
-ARCHIVE_DIR="docs/archive/ralph-v${VERSION}"
-PRD_ARCHIVE="docs/archive/PRD-v${VERSION}.md"
+ARCHIVE_DIR="ralph/archive/v${VERSION}"
+PRD_ARCHIVE="${ARCHIVE_DIR}/PRD.md"
 
-echo "📁 Creating archive directory: $ARCHIVE_DIR"
+echo "Creating archive directory: $ARCHIVE_DIR"
 mkdir -p "$ARCHIVE_DIR"
 
-echo "📦 Archiving current PRD: $PRD_ARCHIVE"
+echo "Archiving current PRD: $PRD_ARCHIVE"
 if [ -f "docs/PRD.md" ]; then
     mv docs/PRD.md "$PRD_ARCHIVE"
 else
     echo "Warning: No current PRD.md to archive"
 fi
 
-echo "📦 Archiving ralph state to: $ARCHIVE_DIR"
-if [ -f "docs/ralph/prd.json" ]; then
-    mv docs/ralph/prd.json "$ARCHIVE_DIR/prd.json"
+echo "Archiving ralph state to: $ARCHIVE_DIR"
+if [ -f "ralph/state/prd.json" ]; then
+    mv ralph/state/prd.json "$ARCHIVE_DIR/prd.json"
 fi
-if [ -f "docs/ralph/progress.txt" ]; then
-    mv docs/ralph/progress.txt "$ARCHIVE_DIR/progress.txt"
+if [ -f "ralph/state/progress.txt" ]; then
+    mv ralph/state/progress.txt "$ARCHIVE_DIR/progress.txt"
 fi
 
-echo "📝 Activating new PRD: $NEW_PRD -> docs/PRD.md"
+echo "Activating new PRD: $NEW_PRD -> docs/PRD.md"
 cp "$NEW_PRD" docs/PRD.md
 rm "$NEW_PRD"
 
-echo "✅ Reorganization complete!"
+echo "Reorganization complete!"
 echo ""
 echo "Archived:"
 echo "  - PRD: $PRD_ARCHIVE"

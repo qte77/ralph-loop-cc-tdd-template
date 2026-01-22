@@ -64,7 +64,7 @@ When PRD.md changes significantly, reorganize and archive:
 make ralph_reorganize NEW_PRD=docs/PRD-v2.md VERSION=2
 ```
 
-Archives current PRD, prd.json, and progress to `docs/ralph/archive/`, then activates new PRD.
+Archives current PRD, prd.json, and progress to `ralph/archive/`, then activates new PRD.
 
 ## Optional: MCP Servers
 
