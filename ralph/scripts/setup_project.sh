@@ -52,8 +52,8 @@ echo "(Leave inputs empty to use found, default or empty values)"
 echo ""
 
 # Check if already customized
-if [ ! -d "src/your_project_name" ] && [ -z "$GITHUB_REPO" ]; then
-	echo "WARNING: Appears already customized (src/your_project_name/ not found)"
+if [ ! -d "src/[APP-NAME]" ] && [ -z "$GITHUB_REPO" ]; then
+	echo "WARNING: Appears already customized (src/[APP-NAME]/ not found)"
 	read -p "Continue anyway? [y/N]: " confirm
 	[ "$confirm" != "y" ] && exit 0
 fi
@@ -85,7 +85,8 @@ if [ -z "$PROJECT" ]; then
 		read -p "Project name (kebab-case, e.g., my-app): " PROJECT
 	fi
 else
-	PROJECT="$PROJECT"
+	read -p "Project name (found '$PROJECT'): " INPUT_PROJECT
+	PROJECT=${INPUT_PROJECT:-$PROJECT}
 fi
 
 # Derive default app name from PROJECT
@@ -99,7 +100,8 @@ APP_NAME=${APP_NAME:-$PROJECT_SNAKE}
 if [ -z "$DESCRIPTION" ]; then
 	read -p "Project description: " DESCRIPTION
 else
-	DESCRIPTION="$DESCRIPTION"
+	read -p "Project description (found '$DESCRIPTION'): " INPUT_DESC
+	DESCRIPTION=${INPUT_DESC:-$DESCRIPTION}
 fi
 
 # Get AUTHOR (auto-detect from org, user can override)
@@ -143,11 +145,21 @@ echo "  Year: $YEAR"
 echo "  Python version: $PYTHON_VERSION (py$PYTHON_VERSION_SHORT)"
 echo ""
 
-# Perform replacements
+# Backup template files to ralph/backup
+mkdir -p ralph/backup
+mv README.md ralph/backup/README.md
+mv CHANGELOG.md ralph/backup/CHANGELOG.md
+mv pyproject.toml ralph/backup/pyproject.toml
+
+# Create fresh project files from templates
+cp ralph/templates/project/README.template.md README.md
+cp ralph/templates/project/CHANGELOG.template.md CHANGELOG.md
+cp ralph/templates/project/pyproject.template.toml pyproject.toml
+
+# Perform string replacements
 sed -i "s|\\[GITHUB-REPO\\]|$GITHUB_REPO|g" README.md
-sed -i "s|Python Ralph-Loop Template|$PROJECT|g" README.md
-sed -i "s|> What a time to be alive|$DESCRIPTION|g" README.md
-sed -i "/Out-of-the-box Python project template using Ralph Loop autonomous development with Claude Code (plugins, skills, rules), TDD, uv, ruff, pyright, pytest. Also including interactive User Story and PRD generation./{N;d;}" README.md
+sed -i "s|\\[PROJECT-NAME\\]|$PROJECT|g" README.md
+sed -i "s|\\[PROJECT-DESCRIPTION\\]|$DESCRIPTION|g" README.md
 sed -i "s|\\[PROJECT-NAME\\]|$PROJECT|g" pyproject.toml
 sed -i "s|\\[PROJECT-DESCRIPTION\\]|$DESCRIPTION|g" pyproject.toml
 sed -i "s|\\[PYTHON-VERSION\\]|$PYTHON_VERSION|g" pyproject.toml
@@ -155,21 +167,22 @@ sed -i "s|\\[PYTHON-VERSION-SHORT\\]|$PYTHON_VERSION_SHORT|g" pyproject.toml
 sed -i "s|\\[APP-NAME\\]|$APP_NAME|g" pyproject.toml
 sed -i "s|\\[YEAR\\]|$YEAR|g" LICENSE.md
 sed -i "s|\\[YOUR-NAME-OR-ORGANIZATION\\]|$AUTHOR|g" LICENSE.md
-sed -i "s|\\[PROJECT-NAME\\]|$PROJECT|g" scripts/ralph/init.sh
-sed -i "s|\\[PROJECT-NAME\\]|$PROJECT|g" docs/ralph/templates/progress.txt.template
-sed -i "s|\\[PROJECT-NAME\\]|$PROJECT|g" docs/ralph/templates/prd.json.template
+sed -i "s|\\[PROJECT-NAME\\]|$PROJECT|g" ralph/scripts/init.sh
+sed -i "s|\\[PROJECT-NAME\\]|$PROJECT|g" ralph/templates/progress.txt.template
+sed -i "s|\\[PROJECT-NAME\\]|$PROJECT|g" ralph/templates/prd.json.template
 sed -i "s|\\[PROJECT-NAME\\]|$PROJECT|g" mkdocs.yaml
 sed -i "s|\\[PROJECT-DESCRIPTION\\]|$DESCRIPTION|g" mkdocs.yaml
 sed -i "s|\\[GITHUB-REPO\\]|$GITHUB_REPO|g" mkdocs.yaml
 sed -i "s|devcontainers\/python|devcontainers\/python:$PYTHON_VERSION|g" .devcontainer/project/devcontainer.json
+sed -i "s|\\[PROJECT-DESCRIPTION\\]|$DESCRIPTION|g" src/[APP-NAME]/__init__.py
 
 # Rename source directory
-if [ -d "src/your_project_name" ]; then
-	mv src/your_project_name "src/$APP_NAME"
+if [ -d "src/[APP-NAME]" ]; then
+	mv "src/[APP-NAME]" "src/$APP_NAME"
 fi
 
-# Verify replacements
-REMAINING=$(grep -r "\[PROJECT-NAME\]\|\[APP-NAME\]\|\[GITHUB-REPO\]\|\[YEAR\]\|\[YOUR-NAME-OR-ORGANIZATION\]\|\[PROJECT-DESCRIPTION\]\|\[PYTHON-VERSION\]\|\[PYTHON-VERSION-SHORT\]" . --exclude-dir=.git --exclude="TEMPLATE_USAGE.md" --exclude="Makefile" --exclude="setup_project.sh" 2>/dev/null | wc -l)
+# Verify string replacements
+REMAINING=$(grep -r "\[PROJECT-NAME\]\|\[APP-NAME\]\|\[GITHUB-REPO\]\|\[YEAR\]\|\[YOUR-NAME-OR-ORGANIZATION\]\|\[PROJECT-DESCRIPTION\]\|\[PYTHON-VERSION\]\|\[PYTHON-VERSION-SHORT\]" . --exclude-dir=.git --exclude-dir=ralph --exclude="TEMPLATE_USAGE.md" --exclude="Makefile" --exclude="setup_project.sh" 2>/dev/null | wc -l)
 if [ $REMAINING -gt 0 ]; then
 	echo ""
 	echo "WARNING: Some placeholders may remain. Review with:"

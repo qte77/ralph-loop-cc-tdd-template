@@ -11,6 +11,8 @@ on:
   workflow_dispatch:
 jobs:
   ruff:
+    # Skip in template mode (src/[APP-NAME]/__init__.py exists)
+    if: hashFiles('src/[APP-NAME]/__init__.py') == ''
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

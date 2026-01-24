@@ -30,8 +30,8 @@ setup_markdownlint:  ## Setup markdownlint CLI, node.js and npm have to be prese
 	npm install -gs markdownlint-cli
 	echo "markdownlint version: $$(markdownlint --version)"
 
-setup_project:  ## Customize template with your project details. Run with help: bash scripts/setup_project.sh help
-	bash scripts/setup_project.sh || { echo ""; echo "ERROR: Project setup failed. Please check the error messages above."; exit 1; }
+setup_project:  ## Customize template with your project details. Run with help: bash ralph/scripts/setup_project.sh help
+	bash ralph/scripts/setup_project.sh || { echo ""; echo "ERROR: Project setup failed. Please check the error messages above."; exit 1; }
 
 
 # MARK: run markdownlint
@@ -85,23 +85,23 @@ ralph_prd:  ## [Optional] Generate PRD.md from UserStory.md
 
 ralph_init:  ## Initialize Ralph loop environment
 	echo "Initializing Ralph loop environment ..."
-	bash scripts/ralph/init.sh
+	bash ralph/scripts/init.sh
 
 ralph_run:  ## Run Ralph autonomous development loop (use ITERATIONS=N to set max iterations)
 	echo "Starting Ralph loop ..."
 	ITERATIONS=$${ITERATIONS:-25}
-	bash scripts/ralph/ralph.sh $$ITERATIONS
+	bash ralph/scripts/ralph.sh $$ITERATIONS
 
 ralph_status:  ## Show Ralph loop progress and status
 	echo "Ralph Loop Status"
 	echo "================="
-	if [ -f docs/ralph/prd.json ]; then
-		total=$$(jq '.stories | length' docs/ralph/prd.json)
-		passing=$$(jq '[.stories[] | select(.passes == true)] | length' docs/ralph/prd.json)
+	if [ -f ralph/state/prd.json ]; then
+		total=$$(jq '.stories | length' ralph/state/prd.json)
+		passing=$$(jq '[.stories[] | select(.passes == true)] | length' ralph/state/prd.json)
 		echo "Stories: $$passing/$$total completed"
 		echo ""
 		echo "Incomplete stories:"
-		jq -r '.stories[] | select(.passes == false) | "  - [\(.id)] \(.title)"' docs/ralph/prd.json
+		jq -r '.stories[] | select(.passes == false) | "  - [\(.id)] \(.title)"' ralph/state/prd.json
 	else
 		echo "prd.json not found. Run 'make ralph_init' first."
 	fi
@@ -110,7 +110,7 @@ ralph_clean:  ## Reset Ralph state (WARNING: removes prd.json and progress.txt)
 	echo "WARNING: This will reset Ralph loop state!"
 	echo "Press Ctrl+C to cancel, Enter to continue..."
 	read
-	rm -f docs/ralph/prd.json docs/ralph/progress.txt
+	rm -f ralph/state/prd.json ralph/state/progress.txt
 	echo "Ralph state cleaned. Run 'make ralph_init' to reinitialize."
 
 ralph_reorganize:  ## Archive current PRD and start new iteration. Usage: make ralph_reorganize NEW_PRD=path/to/new.md [VERSION=2]
@@ -123,7 +123,7 @@ ralph_reorganize:  ## Archive current PRD and start new iteration. Usage: make r
 	if [ -n "$(VERSION)" ]; then
 		VERSION_ARG="-v $(VERSION)"
 	fi
-	bash scripts/ralph/reorganize_prd.sh $$VERSION_ARG $(NEW_PRD)
+	bash ralph/scripts/reorganize_prd.sh $$VERSION_ARG $(NEW_PRD)
 
 
 # MARK: help

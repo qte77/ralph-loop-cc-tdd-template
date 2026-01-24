@@ -76,8 +76,8 @@ check_project_structure() {
         "docs/PRD.md"
         "Makefile"
         ".claude/skills/generating-prd/SKILL.md"
-        "scripts/ralph/ralph.sh"
-        "docs/ralph/templates/prompt.md"
+        "ralph/scripts/ralph.sh"
+        "ralph/templates/prompt.md"
     )
 
     local missing=0
@@ -100,23 +100,23 @@ check_project_structure() {
 create_state_dirs() {
     log_info "Creating state directories..."
 
-    mkdir -p docs/ralph
+    mkdir -p ralph/state
 
     log_success "State directories created"
 }
 
 # Initialize progress.txt from template if it doesn't exist
 initialize_progress() {
-    if [ ! -f "docs/ralph/progress.txt" ]; then
+    if [ ! -f "ralph/state/progress.txt" ]; then
         log_info "Initializing progress.txt from template..."
 
-        if [ -f "docs/ralph/templates/progress.txt.template" ]; then
+        if [ -f "ralph/templates/progress.txt.template" ]; then
             # Copy from template and replace {{DATE}} placeholder
-            sed "s/{{DATE}}/$(date)/" docs/ralph/templates/progress.txt.template > docs/ralph/progress.txt
+            sed "s/{{DATE}}/$(date)/" ralph/templates/progress.txt.template > ralph/state/progress.txt
             log_success "progress.txt initialized from template"
         else
             log_warn "Template not found, creating default progress.txt..."
-            cat > docs/ralph/progress.txt <<EOF
+            cat > ralph/state/progress.txt <<EOF
 # Ralph Loop Progress Log
 
 Started: $(date)
@@ -137,14 +137,14 @@ EOF
 
 # Check if prd.json exists, create from template if not
 check_prd_json() {
-    if [ ! -f "docs/ralph/prd.json" ]; then
+    if [ ! -f "ralph/state/prd.json" ]; then
         log_warn "prd.json not found"
 
-        if [ -f "docs/ralph/templates/prd.json.template" ]; then
+        if [ -f "ralph/templates/prd.json.template" ]; then
             log_info "Creating prd.json from template..."
-            cp docs/ralph/templates/prd.json.template docs/ralph/prd.json
+            cp ralph/templates/prd.json.template ralph/state/prd.json
             # Update timestamp
-            sed -i "s/\"TEMPLATE\"/\"$(date -u +"%Y-%m-%dT%H:%M:%SZ")\"/" docs/ralph/prd.json
+            sed -i "s/\"TEMPLATE\"/\"$(date -u +"%Y-%m-%dT%H:%M:%SZ")\"/" ralph/state/prd.json
             log_success "prd.json created from template"
         fi
 
@@ -158,9 +158,9 @@ check_prd_json() {
         log_success "prd.json found"
 
         # Validate JSON format
-        if jq empty docs/ralph/prd.json 2>/dev/null; then
-            local total=$(jq '.stories | length' docs/ralph/prd.json)
-            local passing=$(jq '[.stories[] | select(.passes == true)] | length' docs/ralph/prd.json)
+        if jq empty ralph/state/prd.json 2>/dev/null; then
+            local total=$(jq '.stories | length' ralph/state/prd.json)
+            local passing=$(jq '[.stories[] | select(.passes == true)] | length' ralph/state/prd.json)
             log_info "Status: $passing/$total stories completed"
         else
             log_error "prd.json is invalid JSON"
@@ -172,9 +172,10 @@ check_prd_json() {
 # Make scripts executable
 make_executable() {
     log_info "Making scripts executable..."
-    chmod +x scripts/ralph/ralph.sh
-    chmod +x scripts/ralph/init.sh
-    chmod +x scripts/ralph/reorganize_prd.sh
+    chmod +x ralph/scripts/ralph.sh
+    chmod +x ralph/scripts/init.sh
+    chmod +x ralph/scripts/reorganize_prd.sh
+    chmod +x ralph/scripts/setup_project.sh
     log_success "Scripts are executable"
 }
 
@@ -192,14 +193,14 @@ main() {
 
     if ! check_prd_json; then
         log_warn "Run prd.json generation before starting Ralph loop"
-        exit 1
+        exit 0
     fi
 
     echo ""
     log_info "Ready to run Ralph loop:"
     log_info "  make ralph_run [ITERATIONS=25]"
     log_info "  or"
-    log_info "  ./scripts/ralph/ralph.sh 5"
+    log_info "  make ralph_run ITERATIONS=5"
     echo ""
 }
 

@@ -84,7 +84,7 @@ purpose: Functional requirements and acceptance criteria for all user stories
 
 ## Notes for Ralph Loop
 
-When using the `generating-prd` skill to convert this PRD to `docs/ralph/prd.json`:
+When using the `generating-prd` skill to convert this PRD to `ralph/state/prd.json`:
 
 1. Each feature/user story becomes a separate atomic story
 2. Stories should be implementable in a single context window (100-300 lines)

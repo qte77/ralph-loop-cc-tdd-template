@@ -1,51 +1,10 @@
 [project]
-name = "[PROJECT-NAME]"
+name = "ralph-loop-cc-tdd-template"
 version = "0.0.0"
-description = "[PROJECT-DESCRIPTION]"
-requires-python = ">=[PYTHON-VERSION]"
+description = "Python Ralph-Loop Template with Claude Code, TDD, and autonomous development"
+requires-python = ">=3.13"
 readme = "README.md"
 license = { file = "LICENSE.md" }
-
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
-
-dependencies = []
-
-[project.optional-dependencies]
-dev = [
-    "pytest>=8.0.0",
-    "ruff>=0.8.0",
-    "pyright>=1.1.0",
-]
-
-[tool.uv]
-dev-dependencies = [
-    "pytest>=8.0.0",
-    "ruff>=0.8.0",
-    "pyright>=1.1.0",
-]
-
-[tool.ruff]
-line-length = 100
-target-version = "py[PYTHON-VERSION-SHORT]"
-
-[tool.ruff.lint]
-select = ["E", "F", "I", "N", "W", "UP"]
-ignore = []
-
-[tool.pyright]
-pythonVersion = "[PYTHON-VERSION]"
-typeCheckingMode = "basic"
-reportMissingImports = true
-reportMissingTypeStubs = false
-
-[tool.pytest.ini_options]
-testpaths = ["tests"]
-python_files = ["test_*.py"]
-python_classes = ["Test*"]
-python_functions = ["test_*"]
-addopts = "-v --tb=short"
 
 [tool.bumpversion]
 current_version = "0.0.0"
@@ -65,11 +24,6 @@ commit_args = ""
 filename = "pyproject.toml"
 search = 'version = "{current_version}"'
 replace = 'version = "{new_version}"'
-
-[[tool.bumpversion.files]]
-filename = "src/[APP-NAME]/__init__.py"
-search = '__version__ = "{current_version}"'
-replace = '__version__ = "{new_version}"'
 
 [[tool.bumpversion.files]]
 filename = "README.md"
